@@ -8,7 +8,15 @@ import axios from 'axios';
 /* MEMO POST */
 export function memoPostRequest(contents) {
     return (dispatch) => {
-        // to be implemented
+        dispatch(memoPost());
+
+        return axios.post('/api/memo/', { contents })
+        .then((response) => {
+            dispatch(memoPostSuccess());
+        })
+        .catch((error) => {
+            dispatch(memoPostFailure(error.response.data.code));
+        });
     };
 }
  
