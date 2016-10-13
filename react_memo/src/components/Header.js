@@ -14,7 +14,9 @@ class Header extends React.Component {
 
     const logoutButton = (
       <li>
-          <a><i className="material-icons">lock_open</i></a>
+          <a onClick={this.props.onLogout}>
+              <i className="material-icons">lock_open</i>
+          </a>
       </li>
     );
 
