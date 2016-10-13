@@ -53,6 +53,7 @@ export function loginFailure() {
 export function registerRequest(username, password) {
     return (dispatch) => {
         dispatch(register());
+
         return axios.post('/api/account/signup', { username, password})
         .then((response) => {
             dispatch(registerSuccess());

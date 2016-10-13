@@ -17,8 +17,9 @@ const initialState = {
 };
 
 export default function authentication(state, action) {
-    if(typeof state === "undefined")
+    if(typeof state === "undefined") {
         state = initialState;
+    }
 
     switch (action.type) {
         // 로그인 인증

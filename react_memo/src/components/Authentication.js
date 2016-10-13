@@ -17,7 +17,7 @@ class Authentication extends React.Component {
   handleChange(e) {
     let nextState = {};
     nextState[e.target.name] = e.target.value;
-    this.state(nextState);
+    this.setState(nextState);
   }
 
   handleLogin() {
@@ -40,10 +40,10 @@ class Authentication extends React.Component {
     let pw = this.state.password;
 
     this.props.onRegister(id, pw).then(
-      (result) => {
-        if (!result) {
+      (success) => {
+        if (!success) {
           this.setState({
-            username: '',
+            // username: '',
             password: ''
           });
         }
@@ -52,7 +52,7 @@ class Authentication extends React.Component {
   }
 
   handleKeyPress(e) {
-    if(e.charCode==13) {
+    if(e.charCode === 13) {
       if(this.props.mode) {
         this.handleLogin();
       } else {
@@ -70,8 +70,8 @@ class Authentication extends React.Component {
                 name="username"
                 type="text"
                 className="validate"
-                onChange={this.handleChange}
-                vaule={this.state.username}/>
+                value={this.state.username}
+                onChange={this.handleChange}/>
             </div>
             <div className="input-field col s12">
                 <label>Password</label>
@@ -79,8 +79,8 @@ class Authentication extends React.Component {
                 name="password"
                 type="password"
                 className="validate"
+                value={this.state.password}
                 onChange={this.handleChange}
-                vaule={this.state.password}
                 onKeyPress={this.handleKeyPress}/>
             </div>
         </div>
