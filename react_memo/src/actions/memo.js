@@ -9,7 +9,7 @@ import axios from 'axios';
 export function memoPostRequest(contents) {
     return (dispatch) => {
         dispatch(memoPost());
-
+ 
         return axios.post('/api/memo/', { contents })
         .then((response) => {
             dispatch(memoPostSuccess());

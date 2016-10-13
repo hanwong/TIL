@@ -1,18 +1,18 @@
 import * as types from 'actions/ActionTypes';
 import update from 'react-addons-update';
- 
+
 const initialState = {
     post: {
         status: 'INIT',
         error: -1
     }
 };
- 
+
 export default function memo(state, action) {
     if(typeof state === "undefined") {
         state = initialState;
     }
- 
+
     switch(action.type) {
         case types.MEMO_POST:
             return update(state, {
