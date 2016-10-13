@@ -36,8 +36,7 @@ class Login extends React.Component {
     render() {
         return (
             <div>
-                <Authentication mode={true}
-                onLogin={this.handleLogin}/>
+                <Authentication mode={true} onLogin={this.handleLogin}/>
             </div>
         );
     }
