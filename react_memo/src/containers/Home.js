@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Write, MemoList } from 'components';
-import { memoPostRequest } from 'actions/memo';
+import { memoPostRequest, memoListRequest } from 'actions/memo';
 
 class Home extends React.Component {
     constructor(props) {
@@ -9,11 +9,19 @@ class Home extends React.Component {
         this.handlePost = this.handlePost.bind(this);
     }
 
+    componentDidMount() {
+        this.props.memoListRequest(true).then(
+            () => {
+                console.log(this.props.memoData);
+            }
+        );
+    }
+
     handlePost(contents) {
         return this.props.memoPostRequest(contents).then(
             () => {
                 if(this.props.postStatus.status === 'SUCCESS') {
-                    Meteralize.toast('Success!', 2000);
+                    Materialize.toast('Success!', 2000);
                 }
                 else {
                     let $toastContent;
@@ -126,7 +134,10 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.authentication.status.isLoggedIn
+        isLoggedIn: state.authentication.status.isLoggedIn,
+        postStatus: state.memo.post,
+        currentUser: state.authentication.status.currentUser,
+        memoData: state.memo.list.data
     };
 };
 
@@ -134,6 +145,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         memoPostRequest: (contents) => {
             return dispatch(memoPostRequest(contents));
+        },
+        memoListRequest: (isInitial, listType, id, username) => {
+            return dispatch(memoListRequest(isInitial, listType, id, username));
         }
     };
 };
