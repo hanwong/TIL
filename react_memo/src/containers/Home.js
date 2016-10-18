@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Write, MemoList } from 'components';
-import { memoPostRequest, memoListRequest } from 'actions/memo';
+import { memoPostRequest, memoListRequest, memoEditRequest } from 'actions/memo';
 
 class Home extends React.Component {
     constructor(props) {
@@ -53,7 +53,7 @@ class Home extends React.Component {
                         loadingState: true
                     });
                 }
-            } 
+            }
             else {
                 if(this.state.loadingState) {
                     this.setState({
@@ -69,18 +69,18 @@ class Home extends React.Component {
         clearTimeout(this.memoLoaderTimeoutId);
         $(window).unbind();
     }
-    
+
     loadNewMemo() {
         // CANCEL IF THERE IS A PENDING REQUEST
-        if(this.props.listStatus === 'WAITING') 
+        if(this.props.listStatus === 'WAITING')
             return new Promise((resolve, reject)=> {
                 resolve();
             });
-        
+
         // IF PAGE IS EMPTY, DO THE INITIAL LOADING
         if(this.props.memoData.length === 0 )
             return this.props.memoListRequest(true);
-            
+
         return this.props.memoListRequest(false, 'new', this.props.memoData[0]._id);
     }
 
@@ -93,10 +93,10 @@ class Home extends React.Component {
                 }
             );
         }
-        
+
         // GET ID OF THE MEMO AT THE BOTTOM
         let lastId = this.props.memoData[this.props.memoData.length - 1]._id;
-        
+
         // START REQUEST
         return this.props.memoListRequest(false, 'old', lastId).then(() => {
             // IF IT IS LAST PAGE, NOTIFY
@@ -157,7 +157,8 @@ const mapStateToProps = (state) => {
         currentUser: state.authentication.status.currentUser,
         memoData: state.memo.list.data,
         listStatus: state.memo.list.status,
-        isLast: state.memo.list.isLast
+        isLast: state.memo.list.isLast,
+        editStatus: state.memo.edit
     };
 };
 
@@ -168,6 +169,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         memoListRequest: (isInitial, listType, id, username) => {
             return dispatch(memoListRequest(isInitial, listType, id, username));
+        }
+        memoEditRequest: (id, index, contents) => {
+            return dispatch(memoEditRequest(id, index, contents));
         }
     };
 };

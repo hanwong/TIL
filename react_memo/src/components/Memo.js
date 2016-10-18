@@ -2,13 +2,35 @@ import React from 'react';
 import TimeAgo from 'react-timeago';
 
 class Memo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            editMode: false,
+            value: props.data.contents
+        };
+        this.toggleEdit = this.toggleEdit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    toggleEdit() {
+        this.setState({
+            editMode: !this.state.editMode
+        });
+    }
+
+    handleChange(e) {
+        this.setState({
+            value: e.target.value
+        });
+    }
+
     render() {
         const { data, ownership } = this.props;
-        
+
         const memoView = (
             <div className="card">
                <div className="info">
-                   <a className="username">{this.props.data.writer}</a> wrote a log · 
+                   <a className="username">{this.props.data.writer}</a> wrote a log ·
                    <TimeAgo date={this.props.data.date.created}/>
                     { ownership ? dropDownMenu : undefined }
                    <div className="option-button">
@@ -40,16 +62,32 @@ class Memo extends React.Component {
                      data-activates={`dropdown-${data._id}`}>
                     <i className="material-icons icon-button">more_vert</i>
                 </a>
-                <ul id={`dropdown-${data._id}`} className='dropdown-content'>
-                    <li><a>Edit</a></li>
+                <ul id={`dropdown-${this.props.data._id}`} className='dropdown-content'>
+                    <li><a onClick={this.toggleEdit}>Edit</a></li>
                     <li><a>Remove</a></li>
                 </ul>
             </div>
         );
 
+        const editView = (
+            <div className="write">
+                <div className="card">
+                    <div className="card-content">
+                        <textarea
+                            className="materialize-textarea"
+                            value={this.state.value}
+                            onChange={this.handleChange}></textarea>
+                    </div>
+                    <div className="card-action">
+                        <a onClick={this.toggleEdit}>OK</a>
+                    </div>
+                </div>
+            </div>
+        );
+
         return (
             <div className="container memo">
-               {memoView}
+               {this.state.editMode ? editView : memoView}
            </div>
         );
     }

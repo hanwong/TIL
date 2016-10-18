@@ -4,7 +4,10 @@ import {
     MEMO_POST_FAILURE,
     MEMO_LIST,
     MEMO_LIST_SUCCESS,
-    MEMO_LIST_FAILURE
+    MEMO_LIST_FAILURE,
+    MEMO_EDIT,
+    MEMO_EDIT_SUCCESS,
+    MEMO_EDIT_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -21,19 +24,19 @@ export function memoPostRequest(contents) {
         });
     };
 }
- 
+
 export function memoPost() {
     return {
         type: MEMO_POST
     };
 }
- 
+
 export function memoPostSuccess() {
     return {
         type: MEMO_POST_SUCCESS
     };
 }
- 
+
 export function memoPostFailure(error) {
     return {
         type: MEMO_POST_FAILURE,
@@ -45,9 +48,9 @@ export function memoPostFailure(error) {
 export function memoListRequest(isInitial, listType, id, username) {
     return (dispatch) => {
         dispatch(memoList());
-        
+
         let url = '/api/memo';
-        
+
         if(typeof username==="undefined") {
             // username not given, load public memo
             url = isInitial ? url : `${url}/${listType}/${id}`;
@@ -56,7 +59,7 @@ export function memoListRequest(isInitial, listType, id, username) {
             // load memos of specific user
             /* to be implemented */
         }
-          
+
         return axios.get(url)
         .then((response) => {
             dispatch(memoListSuccess(response.data, isInitial, listType));
@@ -65,13 +68,13 @@ export function memoListRequest(isInitial, listType, id, username) {
         });
     };
 }
- 
+
 export function memoList() {
     return {
         type: MEMO_LIST
     };
 }
- 
+
 export function memoListSuccess(data, isInitial, listType) {
     return {
         type: MEMO_LIST_SUCCESS,
@@ -80,9 +83,45 @@ export function memoListSuccess(data, isInitial, listType) {
         listType
     };
 }
- 
+
 export function memoListFailure() {
     return {
         type: MEMO_LIST_FAILURE
+    };
+}
+
+// 메모 수정
+export function memoEditRequest(id, index, contents) {
+    return (dispatch) => {
+        dispatch(memoEdit());
+
+        return axios.put('/api/memo/' + id, { contents })
+        .then((response) => {
+          dispatch(memoEditSuccess(index, response.data.memo));
+        })
+        .catch((error) => {
+          dispatch(memoEditFailure(error.response.data.code));
+        });
+    };
+}
+
+export function memoEdit() {
+    return {
+        type: MEMO_EDIT
+    };
+}
+
+export function memoEditSuccess(index, memo) {
+    return {
+        type: MEMO_EDIT_SUCCESS,
+        index,
+        memo
+    };
+}
+
+export function memoEditFailure(error) {
+    return {
+        type: MEMO_EDIT_FAILIURE,
+        error
     };
 }
