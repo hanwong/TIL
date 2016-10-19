@@ -88,5 +88,7 @@
 * 새로운 State를 달라고 하고, 새로운 State를 받는다.
 * 새 데이터를 받고 View에게 특정 부분을 업데이트 하라고 한다.
 
+-
+
 #### [참고]
 * [Redux로의 카툰 안내서](http://bestalign.github.io/2015/10/26/cartoon-intro-to-redux/)
