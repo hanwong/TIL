@@ -1,9 +1,11 @@
 import React from 'react';
 import { Memo } from 'components';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class MemoList extends React.Component {
-    render() {
 
+    render() {
+        console.log('MemoList render method executed.');
          const mapToComponents = data => {
             return data.map((memo, i) => {
                 return (<Memo
@@ -13,15 +15,27 @@ class MemoList extends React.Component {
                             index={i}
                             onEdit={this.props.onEdit}
                             onRemove={this.props.onRemove}
+                            onStar={this.props.onStar}
+                            currentUser={this.props.currentUser}
                 />);
             });
         };
 
         return (
             <div>
-                {mapToComponents(this.props.data)}
+                <ReactCSSTransitionGroup
+                    transitionName="memo"
+                    transitionEnterTimeout={2000}
+                    transitionLeaveTimeout={1000}>
+                    {mapToComponents(this.props.data)}
+                </ReactCSSTransitionGroup>
             </div>
         );
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        let update = JSON.stringify(this.props) !== JSON.stringify(nextProps);
+        return update;
     }
 }
 
@@ -29,7 +43,8 @@ MemoList.propTypes = {
     data: React.PropTypes.array,
     currentUser: React.PropTypes.string,
     onEdit: React.PropTypes.func,
-    onRemove: React.PropTypes.func
+    onRemove: React.PropTypes.func,
+    onStar: React.PropTypes.func
 };
 
 MemoList.defaultProps = {
@@ -40,7 +55,11 @@ MemoList.defaultProps = {
     },
     onRemove: (id, index, contents) => {
         console.error('remove function not defined.');
+    },
+    onStar: (id, index) => {
+        console.error(('star function not defined.'));
     }
+
 };
 
 export default MemoList;
