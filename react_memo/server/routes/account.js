@@ -53,7 +53,7 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/signin', (req, res) => {
-  
+
   if( typeof req.body.password !== "string" ) {
     return res.status(401).json({
       error: "LOGIN FAILED",
@@ -108,6 +108,21 @@ router.post('/logout', (req, res) => {
   req.session.destroy(err => { if(err) throw err; });
   return res.json({ success: true });
 
+});
+
+router.get('/search/:username', (req, res) => {
+    var re = new RegExp('^' + req.params.username);
+    Account.find({username: {$regex: re}}, {_id: false, username: true})
+    .limit(5)
+    .sort({username: 1})
+    .exec((err, accounts) => {
+        if(err) throw err;
+        res.json(accounts);
+    });
+});
+
+router.get('/search', (req, res) => {
+    res.json([]);
 });
 
 export default router;

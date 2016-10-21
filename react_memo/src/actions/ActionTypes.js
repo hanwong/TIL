@@ -28,7 +28,11 @@ export const MEMO_EDIT_FAILURE = "MEMO_EDIT_FAILURE";
 export const MEMO_REMOVE = "MEMO_REMOVE";
 export const MEMO_REMOVE_SUCCESS = "MEMO_REMOVE_SUCCESS";
 export const MEMO_REMOVE_FAILURE = "MEMO_REMOVE_FAILURE";
-// 메모 별 
+// 메모 별
 export const MEMO_STAR = "MEMO_STAR";
 export const MEMO_STAR_SUCCESS = "MEMO_STAR_SUCCESS";
 export const MEMO_STAR_FAILURE = "MEMO_STAR_FAILURE";
+// 검색
+export const SEARCH = "SEARCH";
+export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
+export const SEARCH_FAILURE = "SEARCH_FAILURE"; 
