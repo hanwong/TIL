@@ -100,6 +100,7 @@ td {
 .img1 { top: 0; left: 0; }
 .img2 { top: 0; left: 414px; }
 .img3 { top: 0; left: 828px; }
+.img3 img { width: 414px; height: 414px;}
 
 .modal.slider {
     position: fixed;
@@ -117,9 +118,13 @@ td {
 .btn-x {
     display: none;
     position: absolute;
-    top: 5.75px;
-    right: 11.5px;
+    top: 20px;
+    right: 20px;
     z-index: 300;
+}
+.btn-x img {
+    width: 35px;
+    height: 35px;
 }
 
 .bar-ansim {
