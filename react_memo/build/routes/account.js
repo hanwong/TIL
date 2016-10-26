@@ -120,4 +120,16 @@ router.post('/logout', function (req, res) {
   return res.json({ success: true });
 });
 
+router.get('/search/:username', function (req, res) {
+  var re = new RegExp('^' + req.params.username);
+  _account2.default.find({ username: { $regex: re } }, { _id: false, username: true }).limit(5).sort({ username: 1 }).exec(function (err, accounts) {
+    if (err) throw err;
+    res.json(accounts);
+  });
+});
+
+router.get('/search', function (req, res) {
+  res.json([]);
+});
+
 exports.default = router;

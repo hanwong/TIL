@@ -5,13 +5,13 @@ module.exports = {
         './src/index.js',
         './src/style.css'
     ],
- 
+
     output: {
         path: __dirname + '/public/',
         filename: 'bundle.js'
     },
- 
     module: {
+        noParse: /node_modules\/json-schema\/lib\/validate\.js/,
         loaders: [
             {
                 test: /\.js$/,
@@ -26,5 +26,19 @@ module.exports = {
                 loader: 'style!css-loader'
             }
         ]
-    }
+    },
+    //
+    // plugins:[
+    //     new webpack.DefinePlugin({
+    //       'process.env':{
+    //         'NODE_ENV': JSON.stringify('production')
+    //       }
+    //     }),
+    //     new webpack.optimize.UglifyJsPlugin({
+    //       compress:{
+    //         warnings: true
+    //       }
+    //     })
+    // ]
+
 };

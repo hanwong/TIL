@@ -8,13 +8,13 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var _webpackDevServer = require('webpack-dev-server');
-
-var _webpackDevServer2 = _interopRequireDefault(_webpackDevServer);
-
 var _webpack = require('webpack');
 
 var _webpack2 = _interopRequireDefault(_webpack);
+
+var _webpackDevServer = require('webpack-dev-server');
+
+var _webpackDevServer2 = _interopRequireDefault(_webpackDevServer);
 
 var _morgan = require('morgan');
 
@@ -39,13 +39,13 @@ var _routes2 = _interopRequireDefault(_routes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // HTTP REQUEST LOGGER
-var app = (0, _express2.default)();
-
-/* setup routers & static directory */
-// PARSE HTML BODY
+var app = (0, _express2.default)(); // PARSE HTML BODY
 
 var port = 3000;
 var devPort = 4000;
+
+app.use((0, _morgan2.default)('dev'));
+app.use(_bodyParser2.default.json());
 
 /* mongodb connection */
 var db = _mongoose2.default.connection;
@@ -56,27 +56,26 @@ db.once('open', function () {
 // mongoose.connect('mongodb://username:password@host:port/database=');
 _mongoose2.default.connect('mongodb://localhost/codelab');
 
-/* mongodb use session */
+/* use session */
 app.use((0, _expressSession2.default)({
     secret: 'CodeLab1$1$234',
     resave: false,
     saveUninitialized: true
 }));
 
-app.use('/api', _routes2.default);
-app.use((0, _morgan2.default)('dev'));
-app.use(_bodyParser2.default.json());
-
 app.use('/', _express2.default.static(_path2.default.join(__dirname, './../public')));
+
+/* setup routers & static directory */
+app.use('/api', _routes2.default);
+
+app.get('*', function (req, res) {
+    res.sendFile(_path2.default.resolve(__dirname, './../public/index.html'));
+});
 
 /* handle error */
 app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Something broke!');
-});
-
-app.get('/hello', function (req, res) {
-    return res.send('Hello CodeLab');
 });
 
 app.listen(port, function () {
