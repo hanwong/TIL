@@ -23,49 +23,63 @@
     <link rel="stylesheet" href="css/ress.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" media="screen and (max-width: 414px)" href="css/style_ip.css">
 </head>
 <body>
     <section class="topbar" aria-label="top bar">
         <div class="topbar-left">
             <a class="btn-back"  href="">
-                <amp-img src="img/ic_back.png" alt="back button" width="43" height="35"></amp-img>
+                <amp-img media="(min-width: 415px)" src="img/ic_back.png" alt="back button" width="43" height="35"></amp-img>
+                <amp-img media="(max-width: 414px)" src="img/ic_back_ip.png" alt="back button" width="24.72" height="20.13"></amp-img>
             </a>
             <span>서울시 강남구 신사동</span>
         </div>
         <div class="topbar-right">
             <a class="btn-share" href="">
-                <amp-img src="img/ic_share.png" alt="share button" width="35" height="42"></amp-img>
+                <amp-img media="(min-width: 415px)" src="img/ic_share.png" alt="share button" width="35" height="42"></amp-img>
+                <amp-img media="(max-width: 414px)" src="img/ic_share_ip.png" alt="share button" width="20.13" height="24.15"></amp-img>
             </a>
             <a class="btn-like" href="">
-                <amp-img src="img/ic_like_normal.png" alt="like button" width="42" height="40"></amp-img>
+                <amp-img media="(min-width: 415px)" src="img/ic_like_normal.png" alt="like button" width="42" height="40"></amp-img>
+                <amp-img media="(max-width: 414px)" src="img/ic_like_normal_ip.png" alt="like button" width="24.15" height="23"></amp-img>
             </a>
         </div>
     </section>
 
     <section class="slider" aria-label="room image slider">
-        <div class="slide">
-            <amp-img class="slide-image img1" src="img/room1.png" alt="room image" width="720" height="720"></amp-img>
+        <div class="slide img1">
+            <amp-img media="(min-width: 415px)" class="slide-image" src="img/room1.png" alt="room image" width="720" height="720"></amp-img>
+            <amp-img media="(max-width: 414px)" class="slide-image" src="img/room1_ip.png" alt="room image" width="414" height="414"></amp-img>
         </div>
-        <div class="slide">
-            <amp-img class="slide-image img2" src="img/room2.png" alt="room image" width="720" height="720"></amp-img>
+        <div class="slide img2">
+            <amp-img media="(min-width: 415px)" class="slide-image" src="img/room2.png" alt="room image" width="720" height="720"></amp-img>
+            <amp-img media="(max-width: 414px)" class="slide-image" src="img/room2_ip.png" alt="room image" width="414" height="414"></amp-img>
         </div>
-        <div class="slide">
-            <img class="slide-image img3" src="img/room3.png" alt="room image" width="720" height="720">
+        <div class="slide img3">
+            <amp-img media="(min-width: 415px)" class="slide-image" src="img/room3.png" alt="room image" width="720" height="720"></amp-img>
+            <amp-img media="(max-width: 414px)" class="slide-image" src="img/room3_ip.png" alt="room image" width="414" height="414"></amp-img>
         </div>
 
         <div class="btn-x">
-            <img src="img/ic_close.png" alt="close button">
+            <amp-img media="(min-width: 415px)" class="slide-image" src="img/ic_close.png" alt="close button" width="60" height="86"></amp-img>
+            <amp-img media="(max-width: 414px)" class="slide-image" src="img/ic_close_ip.png" alt="close button" width="35" height="49"></amp-img>
         </div>
     </section>
 
     <section class="info" aria-label="infomation">
         <div class="bar-ansim">
             <div class="bar-ansim-left">
-                <amp-img src="img/ic_ansim.png" alt="ansim icon" width="178" height="53"></amp-img>
+                <amp-img media="(min-width: 415px)" src="img/ic_ansim.png" alt="ansim icon" width="178" height="53"></amp-img>
+                <amp-img media="(max-width: 414px)" src="img/ic_ansim_ip.png" alt="ansim icon" width="102.35" height="30.47"></amp-img>
                 <span>가 등록한 방입니다.</span>
             </div>
             <div class="bar-ansim-right">
-                <a href=""><amp-img src="img/ic_help.png" alt="help icon" width="40" height="40"></amp-img></a>
+                <a href="">
+                    <amp-img media="(min-width: 415px)" src="img/ic_help.png" alt="help icon" width="40" height="40"></amp-img>
+                </a>
+                <a href="">
+                    <amp-img media="(max-width: 414px)" src="img/ic_help_ip.png" alt="help icon" width="23" height="23"></amp-img>
+                </a>
             </div>
         </div>
 
@@ -76,7 +90,8 @@
                     <th>보증금</th>
                     <td><strong>10000</strong> 만원
                         <a href="">
-                            <amp-img src="img/ic_gamjung.png" alt="한국 감정원 실거래가 확인" width="222" height="122"></amp-img>
+                            <amp-img media="(min-width: 415px)" src="img/ic_gamjung.png" alt="한국 감정원 실거래가 확인" width="222" height="122"></amp-img>
+                            <amp-img media="(max-width: 414px)" src="img/ic_gamjung_ip.png" alt="한국 감정원 실거래가 확인" width="127.65" height="70.15"></amp-img>
                         </a>
                     </td>
                 </tr>
@@ -167,11 +182,13 @@
             </div>
             <div class="text-box btn-location">
                 <button type="button" name="btn-map">
-                    <amp-img src="img/ic_map.png" alt="map" width="36" height="35"></amp-img>
+                    <amp-img media="(min-width: 415px)" src="img/ic_map.png" alt="map" width="36" height="35"></amp-img>
+                    <amp-img media="(max-width: 414px)" src="img/ic_map_ip.png" alt="map" width="20.7" height="20.13"></amp-img>
                     <span>지도보기</span>
                 </button>
                 <button type="button" name="btn-roadview">
-                    <amp-img src="img/ic_roadview.png" alt="map" width="29" height="41"></amp-img>
+                    <amp-img media="(min-width: 415px)" src="img/ic_roadview.png" alt="map" width="29" height="41"></amp-img>
+                    <amp-img media="(max-width: 414px)" src="img/ic_roadview_ip.png" alt="map" width="16.67" height="23.57"></amp-img>
                     <span>로드뷰보기</span>
                 </button>
             </div>
@@ -181,7 +198,8 @@
         <article class="info-agent">
             <h1>중개사정보</h1>
             <div class="text-box">
-                <amp-img src="img/profile.png" alt="agent" width="202" height="202"></amp-img>
+                <amp-img media="(min-width: 415px)" src="img/profile.png" alt="agent" width="202" height="202"></amp-img>
+                <amp-img media="(max-width: 414px)" src="img/profile_ip.png" alt="agent" width="116.15" height="116.15"></amp-img>
                 <div class="detail-agent">
                     <p>대표공인중개사 (이갑영)</p>
                     <p>okok@naver.com</p>
@@ -209,7 +227,8 @@
             <p>010-5228-7825 <span>중개</span></p>
         </div>
         <button type="button" name="btn-call">
-            <amp-img src="img/ic_call.png" alt="map" width="36" height="36"></amp-img>
+            <amp-img media="(min-width: 415px)" src="img/ic_call.png" alt="map" width="36" height="36"></amp-img>
+            <amp-img media="(max-width: 414px)" src="img/ic_call_ip.png" alt="map" width="20.7" height="20.7"></amp-img>
             <span>문의하기</span>
         </button>
     </section>

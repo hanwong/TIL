@@ -6,6 +6,7 @@
         img2 = document.querySelector('.img2'),
         img3 = document.querySelector('.img3'),
         btnX = document.querySelector('.btn-x'),
+        sliderWidth = window.getComputedStyle(slider).width,
         toggle = 0;
 
     function moveLeft() {
@@ -13,9 +14,9 @@
         var posImg2 = window.getComputedStyle(img2).left;
         var posImg3 = window.getComputedStyle(img3).left;
 
-        posImg1 = parseInt(posImg1) - 720;
-        posImg2 = parseInt(posImg2) - 720;
-        posImg3 = parseInt(posImg3) - 720;
+        posImg1 = parseInt(posImg1) - parseInt(sliderWidth);
+        posImg2 = parseInt(posImg2) - parseInt(sliderWidth);
+        posImg3 = parseInt(posImg3) - parseInt(sliderWidth);
 
         img1.style.left = posImg1 + 'px';
         img2.style.left = posImg2 + 'px';
@@ -27,9 +28,9 @@
         var posImg2 = window.getComputedStyle(img2).left;
         var posImg3 = window.getComputedStyle(img3).left;
 
-        posImg1 = parseInt(posImg1) + 720;
-        posImg2 = parseInt(posImg2) + 720;
-        posImg3 = parseInt(posImg3) + 720;
+        posImg1 = parseInt(posImg1) + parseInt(sliderWidth);
+        posImg2 = parseInt(posImg2) + parseInt(sliderWidth);
+        posImg3 = parseInt(posImg3) + parseInt(sliderWidth);
 
         img1.style.left = posImg1 + 'px';
         img2.style.left = posImg2 + 'px';
@@ -59,21 +60,13 @@
         else if(touchoffsetX > 0 && window.getComputedStyle(img1).left !== '0px') {
             moveRight();
         }
-        else if(touchoffsetX === 0 && toggle === 0 ) {
-            slider.classList.add('modal');
-            btnX.style.display = 'block';
-            toggle = 1;
-        }
 
     });
 
-
-
-    //
-    // slider.onclick = function(){
-    //     slider.classList.add('modal');
-    //     btnX.style.display = 'block';
-    // };
+    slider.onclick = function(){
+        slider.classList.add('modal');
+        btnX.style.display = 'block';
+    };
 
     btnX.addEventListener('touchstart', function(e){
         slider.classList.remove('modal');

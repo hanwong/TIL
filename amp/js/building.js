@@ -28,7 +28,8 @@
             var info = currentData.datas.building;
 
             var template =
-            `<amp-img src="${info.img}" alt="building" width="240" height="240"></amp-img>
+            `<amp-img media="(min-width: 415px)" src="${info.img}" alt="building" width="240" height="240"></amp-img>
+            <amp-img media="(max-width: 414px)" src="img/building.png" alt="building" width="138" height="138"></amp-img>
             <div class="detail-building">
                 <p>${info.name}</p>
                 <p>${info.address1} ${info.address2} ${info.address3}</p>
