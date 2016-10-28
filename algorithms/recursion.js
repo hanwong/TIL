@@ -60,11 +60,12 @@ findMax(testData, 0, 9);
 // Binary Search
 function binarySearch(items, target, begin, end) {
     if(begin > end) {
-        return -1;
+        return console.log('error');
     }
     else {
-        var middle = ( begin + end ) / 2;
-        var compareResult = target.localeCompare(items[middle]);
+        var middle = ( begin + end ) / 2,
+            compareResult = target === items[middle] ? 0 :
+            target < items[middle] ? -1 : 1;
 
         if(compareResult === 0) {
             return middle;
