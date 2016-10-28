@@ -78,3 +78,45 @@ function binarySearch(items, target, begin, end) {
         }
     }
 }
+
+// Maze 미로찾기
+var N = 8,
+    maze = [[0, 0, 0, 0, 0, 0, 0, 1],
+            [0, 1, 1, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 0, 0, 0, 1],
+            [0, 1, 0, 0, 1, 1, 0, 0],
+            [0, 1, 1, 1, 0, 0, 1, 1],
+            [0, 1, 0, 0, 0, 1, 0, 1],
+            [0, 0, 0, 1, 0, 0, 0, 1],
+            [0, 1, 1, 1, 0, 1, 0, 0]];
+
+var pathWay = 0,
+    wall    = 1,
+    blocked = 2,
+    path    = 3;
+
+function findMazePath(x, y) {
+
+    if ( x < 0 || y < 0 || x > N || y > N ) {
+        return false;
+    }
+    else if ( maze[x][y] != pathWay ) {
+        return false;
+    }
+    else if ( x === N-1 && y === N-1 ) {
+        maze[x][y] = path;
+        return true;
+    }
+    else {
+        maze[x][y] = path;
+        if ( findMazePath(x-1, y) ||
+             findMazePath(x, y+1) ||
+             findMazePath(x+1, y) ||
+             findMazePath(x, y-1) ) {
+                 return true;
+        }
+        maze[x][y] = blocked;
+        return false;
+    }
+
+}
