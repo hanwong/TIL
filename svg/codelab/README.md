@@ -259,7 +259,49 @@
     * `viewBox` 축소
         * 음수 영역 표시
         * 비율로 축소
-            * `<svg>` width/height는 변경하지 않고 표시할 전체 영역을 viewBox의 width/height를 변경
+            * `<svg>` width/height는 변경하지 않고 표시할 전체 영역을 `viewBox`의 width/height를 변경
+    * `viewBox` 확대
+        * `<svg>` width/height는 변경하지 않고 표시할 전체 영역을 `viewBox`의 width/height를 변경
+
+## `transform`
+* `translate` - tx[ty] 값 만큼 이동
+    * 도형이동, top, left 보다 처리 속도가 훨씬 빠름
+
+* `scale` - sx[sy] 비율 만큼 이동 및 확대
+    * x,y x2 한 위치로 이동
+    * width,height x2 한 크기로 확대
+    * 음수로도 가능
+
+* `rotate`
+    * (angle, cx, cy)
+    * angle - 양수 시계방향, 음수 시계반대방향
+    * cx, cy - 기본 값은 (0,0)을 기준으로 회전한다.
+
+* `skewX`, `skewY` - 경사, 기울기
+
+* `matrix(a,b,c,d,e,f)`
+    * a - x축 확대 축소
+    * b - y축 기울기
+    * c - x축 기울기
+    * d - y축 확대 축소
+    * e - x축 이동
+    * f - y축 이동
+
+
+## `text`
+* x, y - 시작점
+    * baseline - 한글은 베이스라인에 맞추거나 조금 아래에 표시, 영어는 꼬리 달린 소문자들만 밑으로 표시됨
+* dx, dy - 이동 값
+* textLength - 전체 길이
+* lengthAdjust - textLength 속성, spacing, spacingAndGlyphs
+* rotate - 회전
+    * `rotate="30,50,50,90..."` 각 글자에 따라 다르게 적용 가능
+* text-anchor
+    * 텍스트 위치 맞춤 - start, middle, end
+* writing-mode
+* spacing, letter-spacing, word-spacing
+* text-decoration
+* fill, stroke, dasharray ... svg는 glyph로 그리기 때문에 가능함...
 
 
 ## 공통 엘리먼트
@@ -271,3 +313,9 @@
 
 
 -
+
+* `<canvas>`
+    * 비트맵 기반으로 그려지고
+    * js를 활용해서 그려야함
+    * 속도가 빠름
+    * 확대 축소가 필요 없을 때 사용
