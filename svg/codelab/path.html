@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Path</title>
+</head>
+<body>
+    <svg width="1000" height="1000">
+        <path stroke="blue" stroke-width="5" d="M100,200 L150,100 l100,0 l50,100 z" fill="lime"/>
+        <path stroke="blue" stroke-width="5" d="M100,300 L150,230 H220 v70 z L100,350 h50 z"  fill="orange"/>
+
+        <path class="curve" stroke="blue" stroke-width="5" d="M500,100 A50,50 0 1,0 550,100"  fill="none"/>
+        <line stroke="red" stroke-width="5" x1="500" y1="100" x2="550" y2="100"/>
+        <path stroke="blue" stroke-width="5" d="M500,250 A80,50 0 1,0 560,250"  fill="none"/>
+
+        <path stroke="blue" stroke-width="5" d="M100,500 Q200,350 300,500 T450,500" fill="none"/>
+    </svg>
+</body>
+</html>
