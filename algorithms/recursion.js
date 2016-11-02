@@ -13,7 +13,7 @@ function searchAll(data, begin, end, target) {
         return begin;
     }
     else {
-        return search(data, begin + 1, end, target);
+        return searchAll(data, begin + 1, end, target);
     }
 }
 
@@ -119,4 +119,37 @@ function findMazePath(x, y) {
         return false;
     }
 
+}
+
+
+// Counting Cells in a Blob
+var grid = [[1, 0, 0, 0, 0, 0, 0, 1],
+            [0, 1, 1, 0, 0, 1, 0, 0],
+            [1, 1, 0, 0, 1, 0, 1, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 1, 0, 1, 0, 1, 0, 0],
+            [0, 1, 0, 1, 0, 1, 0, 0],
+            [1, 0, 0, 0, 1, 0, 0, 1],
+            [0, 1, 1, 0, 0, 1, 1, 1]];
+
+var bgColor = 0,
+    imgColor = 1,
+    cntColor = 2;
+
+function countCells(x, y) {
+    var result;
+    if ( x < 0 || y < 0 || x >= N || y >= N ) {
+        console.log('it is not grid');
+        return 0;
+    }
+    else if ( grid[x][y] != imgColor ) {
+        console.log(x,y,'it is not img');
+        return 0;
+    }
+    else {
+        grid[x][y] = cntColor;
+        console.log(x,y, 'count img');
+        result = 1 + countCells(x, y-1) + countCells(x+1, y-1) + countCells(x+1, y) + countCells(x+1, y+1) + countCells(x, y+1) + countCells(x-1, y+1) + countCells(x-1, y) + countCells(x-1, y-1);
+        return result;
+    }
 }
