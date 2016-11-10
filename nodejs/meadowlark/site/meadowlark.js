@@ -1,7 +1,6 @@
 var express = require('express'),
     fortune = require('./lib/fortune'),
     app = express(),
-    // Handlebars 뷰 엔진 생성
     handlebars = require('express-handlebars').create({
         defaultLayout:'main',
         helpers: {
@@ -15,6 +14,7 @@ var express = require('express'),
 
 app.use(express.static(__dirname + '/public'))
     .set('port', process.env.PORT || 3000)
+    // Handlebars 뷰 엔진 생성
     .engine('handlebars', handlebars.engine)
     .set('view engine', 'handlebars');
 
