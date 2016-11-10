@@ -49,6 +49,45 @@ function merge(data, p, q, r) {
     console.log('merge', tmp);
 }
 
-var data = [9,3,2,6,7,5,4,1,8,0];
+var data = [9,3,2,6,7,5,4,1,0,8];
+// console.log('start', data);
+// mergeSort(data, 0, 9);
+
+/**
+ * Quick Sort - 분할정복법
+ *  분할 - pivot 값을 기준으로 나눈다.
+ *  정복 - partition 개념이 중요. pivot 기준의 앞뒤 partition을 순환 정렬
+ *  합병 - nothing to do
+ */
+function quickSort(data, p, r) {
+    if( p < r ) {
+        var q = partition(data, p, r);
+        quickSort(data, p, q-1);
+        quickSort(data, q+1, r);
+    }
+}
+
+function partition(data, p, r) {
+    var pivot=data[r], i = p-1, j = p, tmp;
+
+    for( ; j<=r-1 ; j++) {
+        if(data[j] <= pivot) {
+            i++;
+            tmp = data[i];
+            data[i] = data[j];
+            data[j] = tmp;
+        }
+    }
+
+    tmp = data[i+1];
+    data[i+1] = pivot;
+    data[r] = tmp;
+    console.log('part-small', data.slice(0,i+1));
+    console.log('pivot', data[i+1]);
+    console.log('part-big', data.slice(i+2,r+1));
+    console.log('---partition---', data.slice(p,r+1));
+    return i+1;
+}
 console.log('start', data);
-mergeSort(data, 0, 9);
+quickSort(data, 0, 9);
+console.log('end', data);
