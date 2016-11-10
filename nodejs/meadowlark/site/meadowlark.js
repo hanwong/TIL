@@ -56,6 +56,19 @@ app.get('/', function(req, res) {
     res.render('home');
 });
 
+app.get('/nursery-rhyme', function(req, res) {
+    res.render('nursery-rhyme');
+});
+app.get('/data/nursery-rhyme', function(req, res) {
+    res.json({
+        animal: 'squirrel',
+        bodyPart: 'tail',
+        adjective: 'bushy',
+        noun: 'heck'
+    });
+});
+
+
 app.get('/about', function(req, res) {
     res.render('about', {fortune : fortune.getFortune()});
 });
