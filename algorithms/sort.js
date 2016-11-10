@@ -25,9 +25,13 @@ function merge(data, p, q, r) {
     while (i<=q && j<=r) {
         if(data[i]<=data[j]) {
             tmp[k++] = data[i++];
+            console.log(i, data[i]);
+            console.log(j, data[j]);
         }
         else {
             tmp[k++] = data[j++];
+            console.log(i, data[i]);
+            console.log(j, data[j]);
         }
     }
 
@@ -42,7 +46,9 @@ function merge(data, p, q, r) {
     for( let idx=p ; idx<=r ; idx++) {
         data[idx] = tmp[idx];
     }
+    console.log('merge', data);
 }
 
 var data = [9,3,2,6,7,5,4,1,8,0];
+console.log('start', data);
 mergeSort(data, 0, 9);
