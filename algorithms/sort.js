@@ -82,12 +82,15 @@ function partition(data, p, r) {
     tmp = data[i+1];
     data[i+1] = pivot;
     data[r] = tmp;
+
     console.log('part-small', data.slice(0,i+1));
     console.log('pivot', data[i+1]);
     console.log('part-big', data.slice(i+2,r+1));
     console.log('---partition---', data.slice(p,r+1));
+
     return i+1;
 }
+
 console.log('start', data);
 quickSort(data, 0, 9);
 console.log('end', data);
