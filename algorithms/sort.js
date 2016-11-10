@@ -46,7 +46,7 @@ function merge(data, p, q, r) {
     for( let idx=p ; idx<=r ; idx++) {
         data[idx] = tmp[idx];
     }
-    console.log('merge', data);
+    console.log('merge', tmp);
 }
 
 var data = [9,3,2,6,7,5,4,1,8,0];
