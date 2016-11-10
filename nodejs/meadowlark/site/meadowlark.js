@@ -1,7 +1,14 @@
 var express = require('express'),
     fortune = require('./lib/fortune'),
-    app = express(),
-    handlebars = require('express-handlebars').create({
+    app = express();
+
+var formidable = require('formidable');
+
+// Cookie Secret
+var credentials = require('./credentials');
+
+// Handlebars 뷰 엔진 생성
+var handlebars = require('express-handlebars').create({
         defaultLayout:'main',
         helpers: {
             section: function(name, options) {
@@ -11,16 +18,14 @@ var express = require('express'),
             }
         }
     });
-
-var formidable = require('formidable');
-
-app.use(express.static(__dirname + '/public'))
-    .set('port', process.env.PORT || 3000)
-    // Handlebars 뷰 엔진 생성
-    .engine('handlebars', handlebars.engine)
+app.engine('handlebars', handlebars.engine)
     .set('view engine', 'handlebars');
 
+app.use(express.static(__dirname + '/public'))
+    .set('port', process.env.PORT || 3000);
+
 app.use(require('body-parser').urlencoded({extended: true}));
+app.use(require('cookie-parser')(credentials.cookieSecret));
 
 function getWeatherData() {
     return {

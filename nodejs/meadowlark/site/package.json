@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express-handlebars": "^3.0.0",
     "formidable": "^1.0.17",
     "jquery-file-upload-middleware": "^0.1.8"
