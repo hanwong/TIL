@@ -10,6 +10,7 @@ const initialState = {
         error: -1
     },
     status: {
+        valid: false,
         isLoggedIn: false,
         currentUser: ''
     }
