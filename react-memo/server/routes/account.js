@@ -82,7 +82,7 @@ router.post('/signin', (req, res) => {
 
 });
 
-router.post('/getinfo', (req, res) => {
+router.get('/getinfo', (req, res) => {
     if(typeof req.session.loginInfo === "undefined") {
         return res.status(401).json({
             error: 1
@@ -90,7 +90,6 @@ router.post('/getinfo', (req, res) => {
     }
 
     res.json({ info: req.session.loginInfo });
-
 });
 
 router.post('/logout', (req, res) => {
