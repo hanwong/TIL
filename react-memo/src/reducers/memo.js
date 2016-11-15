@@ -14,6 +14,10 @@ const initialState = {
     edit: {
         status: 'INIT',
         error: -1
+    },
+    remove: {
+        status: 'INIT',
+        error: -1
     }
 };
 
@@ -85,7 +89,7 @@ export default function memo(state, action) {
                     status: { $set: 'FAILURE' }
                 }
             });
-        case types.MEMO_EDIT: 
+        case types.MEMO_EDIT:
             return update(state, {
                 edit: {
                     status: { $set: 'WAITING' },
@@ -111,6 +115,29 @@ export default function memo(state, action) {
                     error: { $set: action.error }
                 }
             });
+        case types.MEMO_REMOVE:
+            return update(state, {
+                remove: {
+                    status: { $set: 'WAITING' },
+                    error: { $set: -1 }
+                }
+            });
+        case types.MEMO_REMOVE_SUCCESS:
+            return update(state, {
+                remove: {
+                    status: { $set: 'SUCCESS' }
+                },
+                list: {
+                    data: { $splice: [[action.index, 1]] }
+                }
+            });
+        case types.MEMO_REMOVE_FAILURE:
+           return update(state, {
+               remove: {
+                   status: { $set: 'FAILURE' },
+                   error: { $set: action.error }
+               }
+           });
         default:
             return state;
 

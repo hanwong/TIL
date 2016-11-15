@@ -5,6 +5,7 @@ const propTypes = {
     data: PropTypes.object,
     ownership: PropTypes.bool,
     onEdit: React.PropTypes.func,
+    onRemove: React.PropTypes.func,
     index: React.PropTypes.number
 };
 
@@ -24,6 +25,9 @@ const defaultProps = {
     onEdit: (id, index, contents) => {
         console.error('onEdit function not defined');
     },
+    onRemove: (id, index) => {
+        console.error('onRemove function not defined');
+    },
     index: -1
 };
 
@@ -37,6 +41,7 @@ class Memo extends Component {
         };
         this.toggleEdit = this.toggleEdit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
     }
 
     componentDidUpdate() {
@@ -73,6 +78,12 @@ class Memo extends Component {
         }
     }
 
+    handleRemove() {
+        let id = this.props.data._id,
+            index = this.props.index;
+        this.props.onRemove(id, index);
+    }
+
     handleChange(e) {
         this.setState({
             value: e.target.value
@@ -91,7 +102,7 @@ class Memo extends Component {
               </a>
               <ul id={`dropdown-${data._id}`} className='dropdown-content'>
                   <li><a onClick={this.toggleEdit}>Edit</a></li>
-                  <li><a>Remove</a></li>
+                  <li><a onClick={this.handleRemove}>Remove</a></li>
               </ul>
           </div>
         );

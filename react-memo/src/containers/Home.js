@@ -5,6 +5,7 @@ import {
     memoPostRequest,
     memoListRequest,
     memoEditRequest,
+    memoRemoveRequest
 } from 'actions/memo';
 
 class Home extends Component {
@@ -15,6 +16,7 @@ class Home extends Component {
         this.loadNewMemo = this.loadNewMemo.bind(this);
         this.loadOldMemo = this.loadOldMemo.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
         this.state = {
             loadingState: false
         };
@@ -174,6 +176,35 @@ class Home extends Component {
         );
     }
 
+    handleRemove(id, index) {
+        this.props.memoRemoveRequest(id, index).then(() => {
+            if(this.props.removeStatus.status==="SUCCESS") {
+                // LOAD MORE MEMO IF THERE IS NO SCROLLBAR
+                // 1 SECOND LATER. (ANIMATION TAKES 1SEC)
+                setTimeout(() => {
+                    if($("body").height() < $(window).height()) {
+                        this.loadOldMemo();
+                    }
+                }, 1000);
+            }
+            else {
+                let errorMessage = [
+                    'Something broke',
+                    'You are not logged in',
+                    'That memo does not exist',
+                    'You do not have permission'
+                ];
+                 // NOTIFY ERROR
+                let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.removeStatus.error - 1] + '</span>');
+                Materialize.toast($toastContent, 2000);
+                // IF NOT LOGGED IN, REFRESH THE PAGE
+                if(this.props.removeStatus.error === 2) {
+                    setTimeout(()=> {location.reload(false)}, 2000);
+                }
+            }
+        });
+    }
+
     render() {
 
         const write = (<Write onPost={this.handlePost}/>);
@@ -184,7 +215,8 @@ class Home extends Component {
                 <MemoList
                     data={this.props.memoData}
                     currentUser={this.props.currentUser}
-                    onEdit={this.handleEdit}/>
+                    onEdit={this.handleEdit}
+                    onRemove={this.handleRemove}/>
             </div>
         );
     }
@@ -198,7 +230,8 @@ const mapStateToProps = (state) => {
         memoData: state.memo.list.data,
         listStatus: state.memo.list.status,
         isLast: state.memo.list.isLast,
-        editStatus: state.memo.edit
+        editStatus: state.memo.edit,
+        removeStatus: state.memo.remove
     };
 };
 
@@ -212,6 +245,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         memoEditRequest: (id, index, contents) => {
             return dispatch(memoEditRequest(id, index, contents));
+        },
+        memoRemoveRequest: (id, index) => {
+            return dispatch(memoRemoveRequest(id, index));
         }
     };
 };
