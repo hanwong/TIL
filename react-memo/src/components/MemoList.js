@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Memo } from 'components';
 
 const propTypes = {
@@ -35,14 +36,21 @@ class MemoList extends Component {
                             index={i}
                             onEdit={this.props.onEdit}
                             onRemove={this.props.onRemove}
+                            currentUser={this.props.currentUser}
                 />);
             });
         };
 
         return (
             <div>
-                {mapToComponents(this.props.data)}
+                <ReactCSSTransitionGroup
+                    transitionName="memo"
+                    transitionEnterTimeout={2000}
+                    transitionLeaveTimeout={1000}>
+                    {mapToComponents(this.props.data)}
+                </ReactCSSTransitionGroup>
             </div>
+
         );
     }
 }
