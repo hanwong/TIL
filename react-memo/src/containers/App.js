@@ -27,13 +27,10 @@ class App extends Component {
 
         // decode base64 & parse json
         loginData = JSON.parse(atob(loginData));
-        console.log('loginData',loginData);
-        console.log('loggedIn?', loginData.isLoggedIn);
+
         // if not logged in, do nothing
         if(!loginData.isLoggedIn) return;
 
-
-        console.log('valid', this.props.status.valid);
         // page refreshed & has a session in cookie,
         // check whether this cookie is valid or not
         this.props.getStatusRequest().then(
