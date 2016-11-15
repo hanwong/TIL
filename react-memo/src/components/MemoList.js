@@ -3,12 +3,17 @@ import { Memo } from 'components';
 
 const propTypes = {
     data: React.PropTypes.array,
-    currentUser: React.PropTypes.string
+    currentUser: React.PropTypes.string,
+    onEdit: React.PropTypes.func
 };
 
 const defaultProps = {
     data: [],
-    currentUser: ''
+    currentUser: '',
+    onEdit: (id, index, contents) => {
+        console.error('edit function not defined');
+
+    }
 };
 
 class MemoList extends Component {
@@ -18,17 +23,19 @@ class MemoList extends Component {
     }
 
     render() {
-
-        const mapToComponents = (data) => {
+        const mapToComponents = data => {
             return data.map((memo, i) => {
                 return (<Memo
-                    data={memo}
-                    ownership={(memo.writer === this.props.currentUser)}
-                    key={memo._id}
+                            data={memo}
+                            ownership={ (memo.writer === this.props.currentUser) }
+                            key={memo._id}
+                            index={i}
+                            onEdit={this.props.onEdit}
                 />);
-            })
-        }
-        return(
+            });
+        };
+
+        return (
             <div>
                 {mapToComponents(this.props.data)}
             </div>
