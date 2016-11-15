@@ -3,11 +3,13 @@ import { Link } from 'react-router';
 
 const propTypes = {
     isLoggedIn: PropTypes.bool,
+    currentUser: PropTypes.string,
     onLogout: PropTypes.func
 };
 
 const defaultProps = {
     isLoggedIn: false,
+    currentUser: '',
     onLogout: () => { console.error('logout function not defined.'); }
 };
 
@@ -38,11 +40,13 @@ class Header extends Component {
                     <ul>
                         <li><a><i className="material-icons">search</i></a></li>
                     </ul>
-
                     <div className="right">
                         <ul>
                             { this.props.isLoggedIn ? logoutButton : loginButton }
                         </ul>
+                    </div>
+                    <div className="right">
+                        { this.props.isLoggedIn ? this.props.currentUser : undefined }
                     </div>
                 </div>
             </nav>

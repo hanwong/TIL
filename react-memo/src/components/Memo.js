@@ -4,12 +4,12 @@ import TimeAgo from 'react-timeago';
 const propTypes = {
     data: PropTypes.object,
     ownership: PropTypes.bool,
-    onEdit: React.PropTypes.func,
-    onRemove: React.PropTypes.func,
-    onStar: React.PropTypes.func,
-    starStatus: React.PropTypes.object,
-    currentUser: React.PropTypes.string,
-    index: React.PropTypes.number
+    onEdit: PropTypes.func,
+    onRemove: PropTypes.func,
+    onStar: PropTypes.func,
+    starStatus: PropTypes.object,
+    currentUser: PropTypes.string,
+    index: PropTypes.number
 };
 
 const defaultProps = {

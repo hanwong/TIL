@@ -77,7 +77,8 @@ class App extends Component {
             <div>
                 { isAuth ? undefined : <Header
                     isLoggedIn={this.props.status.isLoggedIn}
-                    onLogout={this.handleLogout}/> }
+                    onLogout={this.handleLogout}
+                    currentUser={this.props.status.currentUser}/> }
                 { this.props.children }
             </div>
         );
