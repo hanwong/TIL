@@ -30,7 +30,13 @@ class MemoList extends Component {
         super(props);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        let update = JSON.stringify(this.props) !== JSON.stringify(nextProps);
+        return update;
+    }
+
     render() {
+        console.log('MemoList Render');
         const mapToComponents = data => {
             return data.map((memo, i) => {
                 return (<Memo
