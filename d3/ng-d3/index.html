@@ -10,16 +10,15 @@
         margin: 0;
       }
       donut-chart{
-        width: 100px;
-        height: 100px;
-        display: block;
+        width: 300px;
+        height: 300px;
+        display: inline-block;
       }
     </style>
 </head>
-<body data-ng-app="myApp">
+<body data-ng-app="myApp" data-ng-controller="DonutChartCtrl">
     <div>
-        <donut-chart data="[12,24,13]"></donut-chart>
-        <donut-chart data="[12,4,13]"></donut-chart>
+        <donut-chart data="chart" data-ng-repeat="chart in charts"></donut-chart>
     </div>
 
 <script src="angular.js"></script>
@@ -27,6 +26,12 @@
 <script>
 
 var app = angular.module('myApp', []);
+
+app.controller('DonutChartCtrl', function($scope){
+    $scope.charts = d3.range(3).map(function(){
+        return d3.range(10).map(Math.random);
+    });
+});
 
 app.directive('donutChart', function() {
     function link(scope, element) {

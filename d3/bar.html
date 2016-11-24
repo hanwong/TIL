@@ -16,26 +16,36 @@
 </style>
 </head>
 <body>
-
+    <p class="add">새 데이터로 갱신하려면 이 텍스트를 클릭하세요.</p>
+    <p class="remove">데이터를 제거하려면 이 텍스트를 클릭하세요.</p>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
 'use strict'
-var dataset = [5, 10, 13, 12, 22, 25, 9, 10, 19, 32, 22, 42];
-
-var w = 500, h = 50;
+var dataset = [5, 10, 13, 12, 22, 25, 9, 10, 19, 32,
+               22, 42, 45, 34, 23, 22, 15, 19, 41, 28];
+var maxValue = d3.max(dataset);
+var w = 600, h = 300, barPadding = 1;
 var svg = d3.select('body').append('svg')
             .attr('width', w)
-            .attr('height', h*3);
+            .attr('height', h);
+
+var xScale = d3.scale.ordinal()
+                    .domain(d3.range(dataset.length))
+                    .rangeRoundBands([0,w], 0.05);
+
+var yScale = d3.scale.linear()
+                    .domain([0, d3.max(dataset)])
+                    .range([0,h]);
 
 svg.selectAll('rect')
     .data(dataset)
     .enter()
     .append('rect')
     .attr({
-        x: (d, i) => { return i*21; },
-        y: (d) => { return h*3 - d*3; },
-        width: 20,
-        height: (d) => { return d*3; },
+        x: (d, i) => { return xScale(i); },
+        y: (d) => { return h - yScale(d); },
+        width: xScale.rangeBand(),
+        height: (d) => { return yScale(d); },
         fill: (d) => { return `rgb(0,0,${d*10})`; }
     });
 
@@ -45,13 +55,147 @@ svg.selectAll('text')
     .append('text')
     .text((d) => { return d; })
     .attr({
-        x: (d,i) => { return i*21+5; },
-        y: (d,i) => { return h*3-d*3+12; },
+        x: (d,i) => { return xScale(i)+xScale.rangeBand()/2; },
+        y: (d,i) => { return h-yScale(d)+14; },
         'font-family': 'sans-serif',
         'font-size': '11px',
         'fill': 'white'
     });
+/*
+d3.select('p')
+    .on('click', function() {
+        var numValues = dataset.length;
+        dataset = [];
 
+        for( let i=0; i<numValues ; i++) {
+            var newNumber = Math.floor(Math.random()*70);
+            dataset.push(newNumber);
+        }
+
+        yScale.domain([0, d3.max(dataset)]);
+
+        svg.selectAll('rect')
+            .data(dataset)
+            .transition()
+            .delay((d, i) => {
+                return i*100;
+            })
+            .duration(1000)
+            // .ease('elastic')
+            .attr({
+                y: (d) => { return h - yScale(d); },
+                height: (d) => { return yScale(d); },
+                fill: (d) => { return `rgb(0,0,${d*10})`; }
+            });
+
+        svg.selectAll('text')
+            .data(dataset)
+            .transition()
+            .delay((d, i) => {
+                return i*100;
+            })
+            .duration(1000)
+            // .ease('elastic')
+            .text((d) => { return d; })
+            .attr({
+                x: (d,i) => { return xScale(i)+xScale.rangeBand()/2; },
+                y: (d,i) => { return h-yScale(d)+14; }
+            });
+
+    });
+*/
+
+d3.select('p.add')
+    .on('click', function() {
+
+        var newNumber = Math.floor(Math.random()*70);
+        dataset.push(newNumber);
+
+        xScale.domain(d3.range(dataset.length));
+        yScale.domain([0, d3.max(dataset)]);
+
+        var bars = svg.selectAll('rect').data(dataset);
+        var texts = svg.selectAll('text').data(dataset);
+
+        bars.enter()
+            .append('rect')
+            .attr({
+                x: w,
+                y: (d) => { return h - yScale(d); },
+                width: xScale.rangeBand(),
+                height: (d) => { return yScale(d); },
+                fill: (d) => { return `rgb(0,0,${d*10})`; }
+            });
+
+        texts.enter()
+            .append('text')
+            .text((d) => { return d; })
+            .attr({
+                x: (d,i) => { return xScale(i)+xScale.rangeBand()/2; },
+                y: (d,i) => { return h-yScale(d)+14; },
+                'font-family': 'sans-serif',
+                'font-size': '11px',
+                'fill': 'white'
+            });
+
+        bars.transition()
+            .duration(500)
+            .attr({
+                x: (d, i) => { return xScale(i); },
+                y: (d) => { return h - yScale(d); },
+                width: xScale.rangeBand(),
+                height: (d) => { return yScale(d); },
+                // fill: (d) => { return `rgb(0,0,${d*10})`; }
+            });
+
+        texts.transition()
+            .duration(500)
+            .text((d) => { return d; })
+            .attr({
+                x: (d,i) => { return xScale(i)+xScale.rangeBand()/2; },
+                y: (d,i) => { return h-yScale(d)+14; }
+            });
+    });
+
+d3.select('p.remove')
+    .on('click', function() {
+
+        dataset.shift();
+        xScale.domain(d3.range(dataset.length));
+        yScale.domain([0, d3.max(dataset)]);
+
+        var bars = svg.selectAll('rect').data(dataset);
+        var texts = svg.selectAll('text').data(dataset);
+        bars.exit()
+            .transition()
+            .duration(500)
+            .attr('x', w)
+            .remove();
+        texts.exit()
+            .transition()
+            .duration(500)
+            .attr('x', w)
+            .remove();
+
+
+        bars.transition()
+            .duration(500)
+            .attr({
+                x: (d, i) => { return xScale(i); },
+                y: (d) => { return h - yScale(d); },
+                width: xScale.rangeBand(),
+                height: (d) => { return yScale(d); },
+                // fill: (d) => { return `rgb(0,0,${d*10})`; }
+            });
+
+        texts.transition()
+            .duration(500)
+            .text((d) => { return d; })
+            .attr({
+                x: (d,i) => { return xScale(i)+xScale.rangeBand()/2; },
+                y: (d,i) => { return h-yScale(d)+14; }
+            });
+    });
 
 
 // var circle = svg.selectAll('circle')
