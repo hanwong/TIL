@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 with angular</title>
+    <style>
+      body{
+        margin: 0;
+      }
+      donut-chart{
+        width: 100px;
+        height: 100px;
+        display: block;
+      }
+    </style>
+</head>
+<body data-ng-app="myApp">
+    <div>
+        <donut-chart data="[12,24,13]"></donut-chart>
+        <donut-chart data="[12,4,13]"></donut-chart>
+    </div>
+
+<script src="angular.js"></script>
+<script src="d3.js"></script>
+<script>
+
+var app = angular.module('myApp', []);
+
+app.directive('donutChart', function() {
+    function link(scope, element) {
+    // D3 bits...
+        var data = scope.data;
+        var color = d3.scale.category10();
+        var el = element[0];
+        var width = el.clientWidth;
+        var height = el.clientHeight;
+        var min = Math.min(width, height);
+        var pie = d3.layout.pie().sort(null);
+        var arc = d3.svg.arc()
+                        .outerRadius(min / 2 * 0.9)
+                        .innerRadius(min / 2 * 0.5);
+
+        var svg = d3.select(el).append('svg')
+                    .attr({width: width, height: height})
+                    .append('g')
+                    .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+
+        svg.selectAll('path').data(pie(data))
+            .enter().append('path')
+            .style('stroke', 'white')
+            .attr('d', arc)
+            .attr('fill', function(d, i){ return color(i) });
+
+    }
+
+    return {
+        link: link,
+        restrict: 'E',
+        scope: { data: '=' },
+    };
+});
+</script>
+</body>
+</html>
