@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Layout</title>
+</head>
+<body>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var dataset = [5, 10, 20, 45, 6, 25];
+var pie = d3.layout.pie();
+var w = 300, h = 300;
+var outerR = w/2, innerR = 0;
+var arc = d3.svg.arc().innerRadius(innerR).outerRadius(outerR);
+
+var svg = d3.select('body')
+            .append('svg')
+            .attr({
+                'width': w,
+                'height': h
+            });
+
+var arcs = svg.selectAll('g.arc')
+                .data(pie(dataset))
+                .enter()
+                .append('g')
+                .attr({
+                    'class': 'arc',
+                    'transform': `translate(${outerR}, ${outerR})`
+                });
+
+var color = d3.scale.category10();
+
+arcs.append('path')
+    .attr('fill', function(d, i){
+        return color(i);
+    })
+    .attr('d', arc);
+
+
+
+</script>
+</body>
+</html>
