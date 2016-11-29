@@ -5,57 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Reusable</title>
-    <style>
-        .chart-example {
-            margin: 20px;
-            padding: 10px;
-            border: solid 1px #babdb6;
-        }
 
-        /* Chapter 2 */
-        .data-item {
-            border: solid 1px black;
-            margin: 4px;
-            padding: 4px;
-            background-color: #eeeeec;
-        }
-    </style>
 </head>
 <body>
-    <div class="chart-example" id="chart"></div>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-    var dataset = [
-        {"x": 0, "y": 50, "z": 50, "c":"blue"}, {"x": 0, "y": 55, "z": 44, "c":"orange"},
-        {"x": 1, "y": 43, "z": 23, "c":"blue"}, {"x": 1, "y": 20, "z": 20, "c":"orange"},
-        {"x": 2, "y": 81, "z": 81, "c":"blue"}, {"x": 2, "y": 53, "z": 29, "c":"orange"},
-        {"x": 3, "y": 19, "z": 19, "c":"blue"}, {"x": 3, "y": 87, "z": 87, "c":"orange"},
-        {"x": 4, "y": 52, "z": 52, "c":"blue"}, {"x": 4, "y": 48, "z": 43, "c":"orange"},
-        {"x": 5, "y": 24, "z": 34, "c":"blue"}, {"x": 5, "y": 49, "z": 79, "c":"orange"},
-        {"x": 6, "y": 87, "z": 87, "c":"blue"}, {"x": 6, "y": 66, "z": 66, "c":"orange"},
-        {"x": 7, "y": 17, "z": 17, "c":"blue"}, {"x": 7, "y": 27, "z": 27, "c":"orange"},
-        {"x": 8, "y": 68, "z": 98, "c":"blue"}, {"x": 8, "y": 16, "z": 56, "c":"orange"},
-        {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"},
-        {"x": 0, "y": 30, "z": 10, "c":"blue"}, {"x": 0, "y": 20, "z": 20, "c":"orange"},
-        {"x": 1, "y": 43, "z": 53, "c":"blue"}, {"x": 1, "y": 91, "z": 91, "c":"orange"},
-        {"x": 2, "y": 81, "z": 81, "c":"blue"}, {"x": 2, "y": 53, "z": 53, "c":"orange"},
-        {"x": 3, "y": 19, "z": 19, "c":"blue"}, {"x": 3, "y": 87, "z": 47, "c":"orange"},
-        {"x": 4, "y": 52, "z": 12, "c":"blue"}, {"x": 4, "y": 48, "z": 48, "c":"orange"},
-        {"x": 5, "y": 24, "z": 24, "c":"blue"}, {"x": 5, "y": 49, "z": 39, "c":"orange"},
-        {"x": 6, "y": 87, "z": 17, "c":"blue"}, {"x": 6, "y": 66, "z": 66, "c":"orange"},
-        {"x": 7, "y": 17, "z": 17, "c":"blue"}, {"x": 7, "y": 27, "z": 17, "c":"orange"},
-        {"x": 8, "y": 68, "z": 68, "c":"blue"}, {"x": 8, "y": 16, "z": 26, "c":"orange"},
-        {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"},
-        {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
+    // var dataset = [
+    //     {"x": 0, "y": 50, "z": 50, "c":"blue"}, {"x": 0, "y": 55, "z": 44, "c":"orange"},
+    //     {"x": 1, "y": 43, "z": 23, "c":"blue"}, {"x": 1, "y": 20, "z": 20, "c":"orange"},
+    //     {"x": 2, "y": 81, "z": 81, "c":"blue"}, {"x": 2, "y": 53, "z": 29, "c":"orange"},
+    //     {"x": 3, "y": 19, "z": 19, "c":"blue"}, {"x": 3, "y": 87, "z": 87, "c":"orange"},
+    //     {"x": 4, "y": 52, "z": 52, "c":"blue"}, {"x": 4, "y": 48, "z": 43, "c":"orange"},
+    //     {"x": 5, "y": 24, "z": 34, "c":"blue"}, {"x": 5, "y": 49, "z": 79, "c":"orange"},
+    //     {"x": 6, "y": 87, "z": 87, "c":"blue"}, {"x": 6, "y": 66, "z": 66, "c":"orange"},
+    //     {"x": 7, "y": 17, "z": 17, "c":"blue"}, {"x": 7, "y": 27, "z": 27, "c":"orange"},
+    //     {"x": 8, "y": 68, "z": 98, "c":"blue"}, {"x": 8, "y": 16, "z": 56, "c":"orange"},
+    //     {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"},
+    //     {"x": 0, "y": 30, "z": 10, "c":"blue"}, {"x": 0, "y": 20, "z": 20, "c":"orange"},
+    //     {"x": 1, "y": 43, "z": 53, "c":"blue"}, {"x": 1, "y": 91, "z": 91, "c":"orange"},
+    //     {"x": 2, "y": 81, "z": 81, "c":"blue"}, {"x": 2, "y": 53, "z": 53, "c":"orange"},
+    //     {"x": 3, "y": 19, "z": 19, "c":"blue"}, {"x": 3, "y": 87, "z": 47, "c":"orange"},
+    //     {"x": 4, "y": 52, "z": 12, "c":"blue"}, {"x": 4, "y": 48, "z": 48, "c":"orange"},
+    //     {"x": 5, "y": 24, "z": 24, "c":"blue"}, {"x": 5, "y": 49, "z": 39, "c":"orange"},
+    //     {"x": 6, "y": 87, "z": 17, "c":"blue"}, {"x": 6, "y": 66, "z": 66, "c":"orange"},
+    //     {"x": 7, "y": 17, "z": 17, "c":"blue"}, {"x": 7, "y": 27, "z": 17, "c":"orange"},
+    //     {"x": 8, "y": 68, "z": 68, "c":"blue"}, {"x": 8, "y": 16, "z": 26, "c":"orange"},
+    //     {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"},
+    //     {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
+    //   ];
+
+      var dataset = [
+          [50,43,81,19,52,24,87,17,68,49,30,43,81,19,52,24,87,17,68,49,49],
+          [55,20,53,87,48,49,66,27,16,15,20,91,53,87,48,49,66,27,16,15,15]
       ];
 
+      var n = dataset.length, // number of samples
+          m = dataset[0].length; // number of series
 
-    var maxValue = d3.max(dataset);
-    var w = 500, h = 500;
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 600 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
-    var group = [];
 
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    var x0 = d3.scaleBand()
+                .domain(['blue', 'orange'])
+                .range([0, width]);
+    var x1 = d3.scaleBand()
+                .domain(d3.range(m))
+                .range([0, x0.bandwidth()]);
+    var y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([height, 0]);
+
+    var xAxis = d3.axisBottom(x0);
+    var yAxis = d3.axisLeft(y);
+
+    var svg = d3.select('body')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom )
+              .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    var measures = d3.map(dataset, function(d) { return d.c; });
+
+    svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxis);
+
+    svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis);
+
+    svg.append('g').selectAll('g')
+        .data(dataset)
+      .enter().append('g')
+        .style('fill', function(d, i) { return color(i); })
+        .attr('transform', function(d, i){
+            // console.log(x1(i));
+            return `translate(${ x1(i) }, 0)`})
+      .selectAll('rect')
+        .data(function(d) { return d; })
+        .enter().append('rect')
+        .attr('width', x1.bandwidth())
+        .attr('height', y)
+        .attr('x', function(d, i) {
+            // console.log(x0(i), d);
+            return x0.step(i); })
+        .attr('y', function(d) { return height - y(d); });
 
 </script>
 </body>
