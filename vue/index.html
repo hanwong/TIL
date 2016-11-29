@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js</title>
+</head>
+<body>
+    <div id="app">
+        <span v-bind:style="message">
+            Hover your mouse over me for a few seconds to see my dynamically bound title!
+        </span>
+    </div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+
+var app = new Vue({
+    el: '#app',
+    data: {
+        message: 'background: #000; color: #fff;'
+    }
+})
+
+</script>
+</body>
+</html>
