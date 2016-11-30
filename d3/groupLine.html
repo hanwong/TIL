@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>groupBar</title>
-
+    <title>groupLine</title>
 </head>
 <body>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+
     var dataset = [
         {"x": 0, "y": 50, "z": 50, "c":"blue"}, {"x": 0, "y": 55, "z": 44, "c":"orange"},
         {"x": 1, "y": 43, "z": 23, "c":"blue"}, {"x": 1, "y": 20, "z": 20, "c":"orange"},
@@ -35,74 +35,36 @@
         {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
       ];
 
-    //   var dataset2 = [
-    //       [50,43,81,19,52,24,87,17,68,49,30,43,81,19,52,24,87,17,68,49,49],
-    //       [55,20,53,87,48,49,66,27,16,15,20,91,53,87,48,49,66,27,16,15,15]
-    //   ];
-
     var group = d3.map(dataset, function(d) { return d.c });
-    var groupName = [];
-    group.each(function(d) {
-        // console.log(d.c);
-        groupName.push(d.c);
-    });
-
     var newData=[];
     var data = d3.nest()
                 .key(function(d){return d.c;})
                 .entries(dataset);
+
         data.forEach(function(d, i) {
-            // console.log(d);
             var innerData = [];
             d.values.forEach(function(d) {
-                // console.log(d.y);
                 innerData.push(d.y);
             });
             newData.push(innerData);
         });
-    // var data = [];
-    // dataset.forEach(function(d) {
-    //   if(!group.includes(d.c)) {
-    //     group.push(d.c);
-    //     data.push([]);
-    //   }
-    // });
-    // group.forEach(function(d, i) {
-    //     dataset.forEach(function(k) {
-    //         if(k.c === d) {
-    //             data[i].push(k.y);
-    //         }
-    //     });
-    // });
 
-    var x1leng = 0;
-    dataset.forEach(function(d) {
-            if( d.c === groupName[0] ){
-                x1leng++;
-            }
-        });
-    var n = dataset.length, // number of samples
-        m = x1leng;
+    var color = d3.scaleOrdinal(['#2478e7', '#e78c2d']);
+    var colorArea = d3.scaleOrdinal(['rgba(36, 120, 231, 0.44)', 'rgba(231, 140, 45, 0.41)']);
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
+    var x = d3.scalePoint()
+                .domain(d3.range(newData[0].length))
+                .range([0,width]);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20c);
-
-    var x0 = d3.scaleBand()
-                .domain(groupName)
-                .range([0, width])
-                .padding(0.1);
-    var x1 = d3.scaleBand()
-                .domain(d3.range(m))
-                .range([0, x0.bandwidth()]);
     var y = d3.scaleLinear()
-                .domain([0, 100])
-                .range([height, 0]);
+                .domain([0,100])
+                .range([height,0]);
 
-    var xAxis = d3.axisBottom(x0);
+    var xAxis = d3.axisBottom(x);
     var yAxis = d3.axisLeft(y);
 
     var svg = d3.select('body')
@@ -121,35 +83,33 @@
         .attr('class', 'y axis')
         .call(yAxis);
 
+    var area = d3.area()
+                .x(function(d, i) { return x(i); })
+                .y1(function(d) { return y(d); })
+                .y0(height)
+                .curve(d3.curveBasis);
+
+    var line = d3.line()
+                .x(function(d, i) { return x(i); })
+                .y(function(d) { return y(d); })
+                .curve(d3.curveBasis);
+
     svg.append('g').selectAll('g')
         .data(newData)
-      .enter().append('g')
-        .attr('transform', function(d, i){
-            // console.log(groupName[i]);
-            return `translate(${ x0(groupName[i]) }, 0)`})
-      .selectAll('rect')
-        .data(function(d, i) {
-            // console.log(d.values);
-            return d;
-        })
-        .enter().append('rect')
-        .style('fill', function(d, i) { return color(i); })
-        .attr('width', x1.bandwidth())
-        .attr('height', function(d) { return height - y(d); })
-        .attr('x', function(d, i) {
-            // console.log(d,i);
-            return x1.bandwidth()*i; })
-        .attr('y', function(d) { return y(d); })
-        .on('mouseover', function(d){
+        .enter().append('g')
+        .append('path')
+        .attr('d', area)
+        .style('fill', function(d, i) { return colorArea(i); });
 
-            // console.log(d);
+    svg.append('g').selectAll('g')
+        .data(newData)
+        .enter().append('g')
+        .append('path')
+        .attr('d', line)
+        .style('fill','none')
+        .style('stroke-width', 3)
+        .style('stroke', function(d, i) { return color(i); });
 
-            d3.select(this)
-                .attr('fill', 'orange')
-              .append('text')
-                .text(function(d) { return d; })
-                .attr('color', 'white');
-        });
 
 </script>
 </body>

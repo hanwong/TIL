@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>groupBar</title>
+    <title>Reusable</title>
 
 </head>
 <body>
@@ -40,49 +40,24 @@
     //       [55,20,53,87,48,49,66,27,16,15,20,91,53,87,48,49,66,27,16,15,15]
     //   ];
 
-    var group = d3.map(dataset, function(d) { return d.c });
-    var groupName = [];
-    group.each(function(d) {
-        // console.log(d.c);
-        groupName.push(d.c);
-    });
-
-    var newData=[];
-    var data = d3.nest()
-                .key(function(d){return d.c;})
-                .entries(dataset);
-        data.forEach(function(d, i) {
-            // console.log(d);
-            var innerData = [];
-            d.values.forEach(function(d) {
-                // console.log(d.y);
-                innerData.push(d.y);
-            });
-            newData.push(innerData);
-        });
-    // var data = [];
-    // dataset.forEach(function(d) {
-    //   if(!group.includes(d.c)) {
-    //     group.push(d.c);
-    //     data.push([]);
-    //   }
-    // });
-    // group.forEach(function(d, i) {
-    //     dataset.forEach(function(k) {
-    //         if(k.c === d) {
-    //             data[i].push(k.y);
-    //         }
-    //     });
-    // });
-
-    var x1leng = 0;
+    var group = [];
+    var data = [];
     dataset.forEach(function(d) {
-            if( d.c === groupName[0] ){
-                x1leng++;
+      if(!group.includes(d.c)) {
+        group.push(d.c);
+        data.push([]);
+      }
+    });
+    group.forEach(function(d, i) {
+        dataset.forEach(function(k) {
+            if(k.c === d) {
+                data[i].push(k.y);
             }
         });
-    var n = dataset.length, // number of samples
-        m = x1leng;
+    });
+
+    var n = data.length, // number of samples
+        m = data[0].length; // number of series
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40},
         width = 700 - margin.left - margin.right,
@@ -92,7 +67,7 @@
     var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
     var x0 = d3.scaleBand()
-                .domain(groupName)
+                .domain(group)
                 .range([0, width])
                 .padding(0.1);
     var x1 = d3.scaleBand()
@@ -100,7 +75,7 @@
                 .range([0, x0.bandwidth()]);
     var y = d3.scaleLinear()
                 .domain([0, 100])
-                .range([height, 0]);
+                .range([0, height]);
 
     var xAxis = d3.axisBottom(x0);
     var yAxis = d3.axisLeft(y);
@@ -122,27 +97,26 @@
         .call(yAxis);
 
     svg.append('g').selectAll('g')
-        .data(newData)
+        .data(data)
       .enter().append('g')
         .attr('transform', function(d, i){
-            // console.log(groupName[i]);
-            return `translate(${ x0(groupName[i]) }, 0)`})
+            // console.log(x0(group[i]));
+            return `translate(${ x0(group[i]) }, 0)`})
       .selectAll('rect')
-        .data(function(d, i) {
-            // console.log(d.values);
-            return d;
-        })
+        .data(function(d,i) {
+            console.log(d,i);
+            return d; })
         .enter().append('rect')
         .style('fill', function(d, i) { return color(i); })
         .attr('width', x1.bandwidth())
-        .attr('height', function(d) { return height - y(d); })
+        .attr('height', y)
         .attr('x', function(d, i) {
             // console.log(d,i);
             return x1.bandwidth()*i; })
-        .attr('y', function(d) { return y(d); })
+        .attr('y', function(d) { return height - y(d); })
         .on('mouseover', function(d){
 
-            // console.log(d);
+            console.log(d);
 
             d3.select(this)
                 .attr('fill', 'orange')
