@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Parallel Coordinates</title>
+</head>
+<body>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+var dataset = [
+    {"x": 0, "a": 50, "b": 23, "y": 50, "z": 50, },
+    {"x": 1, "a": 23, "b": 43, "y": 43, "z": 23, },
+    {"x": 2, "a": 81, "b": 18, "y": 81, "z": 81, },
+    {"x": 3, "a": 19, "b": 19, "y": 19, "z": 19, },
+    {"x": 4, "a": 52, "b": 32, "y": 52, "z": 52, },
+    {"x": 5, "a": 34, "b": 44, "y": 24, "z": 34, },
+    {"x": 6, "a": 87, "b": 17, "y": 87, "z": 87, },
+    {"x": 7, "a": 17, "b": 47, "y": 17, "z": 17, },
+    {"x": 8, "a": 98, "b": 78, "y": 68, "z": 98, },
+    {"x": 9, "a": 49, "b": 29, "y": 49, "z": 49, },
+    {"x": 0, "a": 10, "b": 20, "y": 30, "z": 10, },
+    {"x": 1, "a": 53, "b": 33, "y": 43, "z": 53, },
+    {"x": 2, "a": 81, "b": 41, "y": 81, "z": 81, },
+    {"x": 3, "a": 19, "b": 69, "y": 19, "z": 19, },
+    {"x": 4, "a": 12, "b": 32, "y": 52, "z": 12, },
+    {"x": 5, "a": 24, "b": 34, "y": 24, "z": 24, },
+    {"x": 6, "a": 17, "b": 27, "y": 87, "z": 17, },
+    {"x": 7, "a": 17, "b": 47, "y": 17, "z": 17, },
+    {"x": 8, "a": 68, "b": 63, "y": 68, "z": 68, },
+    {"x": 9, "a": 49, "b": 42, "y": 49, "z": 49, },
+    {"x": 9, "a": 49, "b": 29, "y": 49, "z": 49, },
+  ];
+
+    var newData=[];
+    var data = d3.nest()
+                .key(function(d){return d.x;})
+                .entries(dataset);
+
+        // data.forEach(function(d) {
+        //     var innerData = {};
+        //     d.values.forEach(function(d, i) {
+        //         d.values.forEach(function(d, i) {
+        //             console.log(d.x,i);
+        //         });
+        //     });
+        //     newData.push(innerData);
+        // });
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20c);
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 700 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select('body')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom )
+              .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    var x = d3.scaleBand()
+                .domain(d3.keys(dataset[0]))
+                .range([0,width])
+                .padding(1);
+    var y = d3.scaleLinear()
+                .domain([0,100])
+                .range([height, 0]);
+
+    var xAxis = d3.axisBottom(x);
+    var yAxis = d3.axisLeft(y);
+
+    svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxis);
+
+    svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis);
+
+
+
+
+
+</script>
+</body>
+</html>
