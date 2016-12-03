@@ -5,9 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Stack</title>
+<style>
+.tool {
+    position : relative;
+    z-index: 10;
+    width: 100px;
+    height: 50px;
+    background: #fff0a3;
+    border-radius: 10%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+.tool::before{
+    content: "";
+    position: absolute;
+    z-index: 5;
+    border-left: 10px solid transparent;
+    border-bottom: 20px solid #fff0a3;
+    border-right: 10px solid transparent;
+    margin: -30px 0 0 0;
+}
+
+</style>
 </head>
 <body>
-
+<!-- <div class="tool"></div> -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 var dataset = [
@@ -30,7 +52,6 @@ var dataset = [
     {"x": 6, "y": 87, "z": 17, "c":"blue"}, {"x": 6, "y": 66, "z": 66, "c":"orange"},
     {"x": 7, "y": 17, "z": 17, "c":"blue"}, {"x": 7, "y": 27, "z": 17, "c":"orange"},
     {"x": 8, "y": 68, "z": 68, "c":"blue"}, {"x": 8, "y": 16, "z": 26, "c":"orange"},
-    {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"},
     {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
   ];
 
@@ -45,17 +66,25 @@ var dataset = [
     var data = d3.nest()
                 .key(function(d){return d.x;})
                 .key(function(d){return d.c;})
+                // .rollup(function(leaves) {
+                //     return leaves.length;
+                // })
                 .entries(dataset);
-                
-        data.forEach(function(d) {
+
+    var datatest = d3.nest()
+                .key(function(d){return d.x;})
+                .key(function(d){return d.c;})
+                .rollup(function(leaves) {
+                    return d3.mean(leaves, function(d) { return d.y; });
+                    // return leaves.length;
+                })
+                .entries(dataset);
+
+        datatest.forEach(function(d) {
             var innerData = {};
             d.values.forEach(function(d, i) {
-                var sum=0, leng=0, gName = groupName[i];
-                d.values.forEach(function(d, i) {
-                    sum += d.y;
-                    leng++;
-                });
-                innerData[gName] = sum/leng;
+                // console.log(d);
+                innerData[groupName[i]] = d.value;
             });
             newData.push(innerData);
         });
@@ -99,7 +128,26 @@ var dataset = [
         .attr('class', 'y axis')
         .call(yAxis);
 
-    svg.append('g').selectAll('g')
+    var legend = svg.append('g').selectAll('.legend')
+        .data(groupName)
+      .enter().append('g')
+        .style('fill', function(d, i) { return color(i); })
+        .attr('class', 'legned')
+        .attr('transform', function(d){ return `translate( ${width - 100 })`; });
+    legend.append('rect')
+        .attr('width', 10)
+        .attr('height', 10)
+        .attr('x', function(d, i) { return 50*i; });
+    legend.append('text')
+        .attr('x', function(d, i) { return 50*i +15; })
+        .attr('y', 9)
+        .attr('fill', 'black')
+        .attr('font-size', 11)
+        .text(function(d) { return d; });
+
+    var tooltip = d3.select('svg').append('div').attr('class', 'tool');
+
+    var bars = svg.append('g').selectAll('g')
         .data(series)
         .enter().append('g')
         .style('fill', function(d, i) { return color(i); })
@@ -109,31 +157,33 @@ var dataset = [
         .attr('width', x.bandwidth())
         .attr('height', function(d) { return height - y(d[1] - d[0]); })
         .attr('x', function(d, i) { return x(i) })
-        .attr('y', function(d, i) { return y(d[1]); })
-        .on('mouseover', function(d,i) {
-            d3.select(this)
-                .attr('fill', 'orange');
+        .attr('y', function(d, i) { return y(d[1]); });
 
-            svg.append('g').selectAll('text')
-                .data(d)
-                .enter()
-                .append('text')
-                .text(d[1]-d[0])
-                .attr('class', 'number')
-                .attr('x', x(i) + 2 )
-                .attr('y', y(d[1]) + 15)
-                .attr('fill', 'white');
+        bars.on('mouseover', function(d,i) {
+            // d3.select(this)
+            //     .attr('fill', 'orange');
 
+            // svg.append('text')
+            //     .attr('class', 'number')
+            //     .text(d[1]-d[0])
+            //     .attr('x', x(i) + 2 )
+            //     .attr('y', y(d[1]) + 15)
+            //     .attr('z', 1)
+            //     .attr('fill', 'white');
+
+            tooltip.html(d[1]-d[0])
+                .style('left', d3.event.pageX +'px')
+                .style('top', d3.event.pageY +'px');
+
+            console.log(d3.event.pageX);
+            console.log(d3.event.pageY);
         })
         .on('mouseout', function(d,i) {
-            d3.select(this)
-            .attr('fill', null);
-
-            svg.selectAll('.number').remove();
+            // d3.select(this)
+            // .attr('fill', null);
+            // svg.selectAll('.number').remove();
 
         });
-
-
 
 
 </script>
