@@ -58,7 +58,6 @@ var dataset = [
     var group = d3.map(dataset, function(d) { return d.c });
     var groupName = [];
     group.each(function(d) {
-        // console.log(d.c);
         groupName.push(d.c);
     });
 
@@ -66,24 +65,14 @@ var dataset = [
     var data = d3.nest()
                 .key(function(d){return d.x;})
                 .key(function(d){return d.c;})
-                // .rollup(function(leaves) {
-                //     return leaves.length;
-                // })
-                .entries(dataset);
-
-    var datatest = d3.nest()
-                .key(function(d){return d.x;})
-                .key(function(d){return d.c;})
                 .rollup(function(leaves) {
                     return d3.mean(leaves, function(d) { return d.y; });
-                    // return leaves.length;
                 })
                 .entries(dataset);
 
-        datatest.forEach(function(d) {
+        data.forEach(function(d) {
             var innerData = {};
             d.values.forEach(function(d, i) {
-                // console.log(d);
                 innerData[groupName[i]] = d.value;
             });
             newData.push(innerData);
@@ -160,32 +149,14 @@ var dataset = [
         .attr('y', function(d, i) { return y(d[1]); });
 
         bars.on('mouseover', function(d,i) {
-            // d3.select(this)
-            //     .attr('fill', 'orange');
-
-            // svg.append('text')
-            //     .attr('class', 'number')
-            //     .text(d[1]-d[0])
-            //     .attr('x', x(i) + 2 )
-            //     .attr('y', y(d[1]) + 15)
-            //     .attr('z', 1)
-            //     .attr('fill', 'white');
-
             tooltip.style('display', 'inline');
-
-            // console.log(d3.event.pageX);
-            // console.log(d3.event.pageY);
         })
         .on('mousemove', function(d,i) {
             tooltip.html(d[1]-d[0])
                 .style('left', d3.event.pageX - 20 +'px')
                 .style('top', d3.event.pageY + 30 +'px');
-
         })
         .on('mouseout', function(d,i) {
-            // d3.select(this)
-            // .attr('fill', null);
-            // svg.selectAll('.number').remove();
             tooltip.style('display', 'none');
         });
 

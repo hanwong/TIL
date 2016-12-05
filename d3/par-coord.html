@@ -88,14 +88,14 @@
         .data(dataset)
         .enter().append('path')
         .attr('d', function(d) {
-            // console.log(d);
+            console.log(d);
             return line(dimensions.map(function(p) {
                 return [x(p), y[p](d[p])]; }));
         })
         .style('fill','none')
         .style('stroke-width', 1)
+        .style('stroke', 'rgba(187, 187, 187, 0.38)');
         // .style('stroke', 'rgba(40, 131, 198, 0.65)');
-        .style('stroke', 'rgba(75, 75, 75, 0.63)');
 
     var foreground = svg.append('g')
         .attr('class', 'line').selectAll('path')

@@ -37,8 +37,8 @@
 
     var group = d3.map(dataset, function(d) { return d.c });
     var newData=[];
+
     var data = d3.nest()
-                .key(function(d){return d.x;})
                 .key(function(d){return d.c;})
                 .entries(dataset);
 
@@ -61,8 +61,11 @@
                 .domain(d3.range(newData[0].length))
                 .range([0,width]);
 
+    var yMax = d3.max(newData, function(d) {
+            return d3.max(d);
+        });
     var y = d3.scaleLinear()
-                .domain([0,100])
+                .domain([0, yMax])
                 .range([height,0]);
 
     var xAxis = d3.axisBottom(x);
@@ -83,33 +86,6 @@
     svg.append('g')
         .attr('class', 'y axis')
         .call(yAxis);
-
-    var area = d3.area()
-                .x(function(d, i) { return x(i); })
-                .y1(function(d) { return y(d); })
-                .y0(height)
-                .curve(d3.curveBasis);
-
-    var line = d3.line()
-                .x(function(d, i) { return x(i); })
-                .y(function(d) { return y(d); })
-                .curve(d3.curveBasis);
-
-    svg.append('g').selectAll('g')
-        .data(newData)
-        .enter().append('g')
-        .append('path')
-        .attr('d', area)
-        .style('fill', function(d, i) { return colorArea(i); });
-
-    svg.append('g').selectAll('g')
-        .data(newData)
-        .enter().append('g')
-        .append('path')
-        .attr('d', line)
-        .style('fill','none')
-        .style('stroke-width', 3)
-        .style('stroke', function(d, i) { return color(i); });
 
 
 </script>
