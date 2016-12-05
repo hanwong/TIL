@@ -7,7 +7,7 @@
     <title>Stack</title>
 <style>
 .tool {
-    position : relative;
+    position : absolute;
     z-index: 10;
     width: 100px;
     height: 50px;
@@ -145,7 +145,7 @@ var dataset = [
         .attr('font-size', 11)
         .text(function(d) { return d; });
 
-    var tooltip = d3.select('svg').append('div').attr('class', 'tool');
+    var tooltip = d3.select('body').append('div').attr('class', 'tool').style('display', 'none');
 
     var bars = svg.append('g').selectAll('g')
         .data(series)
@@ -171,18 +171,22 @@ var dataset = [
             //     .attr('z', 1)
             //     .attr('fill', 'white');
 
-            tooltip.html(d[1]-d[0])
-                .style('left', d3.event.pageX +'px')
-                .style('top', d3.event.pageY +'px');
+            tooltip.style('display', 'inline');
 
-            console.log(d3.event.pageX);
-            console.log(d3.event.pageY);
+            // console.log(d3.event.pageX);
+            // console.log(d3.event.pageY);
+        })
+        .on('mousemove', function(d,i) {
+            tooltip.html(d[1]-d[0])
+                .style('left', d3.event.pageX - 20 +'px')
+                .style('top', d3.event.pageY + 30 +'px');
+
         })
         .on('mouseout', function(d,i) {
             // d3.select(this)
             // .attr('fill', null);
             // svg.selectAll('.number').remove();
-
+            tooltip.style('display', 'none');
         });
 
 
