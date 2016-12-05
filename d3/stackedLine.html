@@ -35,58 +35,9 @@
         {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
       ];
 
-    var group = d3.map(dataset, function(d) { return d.c });
-    var newData=[];
-
-    var data = d3.nest()
-                .key(function(d){return d.c;})
-                .entries(dataset);
-
-        data.forEach(function(d, i) {
-            var innerData = [];
-            d.values.forEach(function(d) {
-                innerData.push(d.y);
-            });
-            newData.push(innerData);
-        });
-
-    var color = d3.scaleOrdinal(['#2478e7', '#e78c2d']);
-    var colorArea = d3.scaleOrdinal(['rgba(36, 120, 231, 0.44)', 'rgba(231, 140, 45, 0.41)']);
-
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 700 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-
-    var x = d3.scalePoint()
-                .domain(d3.range(newData[0].length))
-                .range([0,width]);
-
-    var yMax = d3.max(newData, function(d) {
-            return d3.max(d);
-        });
-    var y = d3.scaleLinear()
-                .domain([0, yMax])
-                .range([height,0]);
-
-    var xAxis = d3.axisBottom(x);
-    var yAxis = d3.axisLeft(y);
-
-    var svg = d3.select('body')
-                .append('svg')
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom )
-              .append('g')
-                .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-    svg.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', `translate(0, ${height})`)
-        .call(xAxis);
-
-    svg.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis);
-
+    function series(data, dimensions) {
+        // d3.map(data, )
+    }
 
 </script>
 </body>
