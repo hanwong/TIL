@@ -34,17 +34,6 @@ var dataset = [
     {"x": 9, "a": 49, "b": 29, "y": 49, "z": 49, },
   ];
 
-    // var newData=[];
-    // var data = d3.nest()
-    //             .key(function(d){return d.x;})
-    //             .entries(dataset);
-    //
-    //     data.forEach(function(d) {
-    //         d.values.forEach(function(d, i) {
-    //             newData.push(d3.values(d));
-    //         });
-    //     });
-
     var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
     var margin = {top: 50, right: 20, bottom: 30, left: 40},
@@ -108,7 +97,8 @@ var dataset = [
     g.append('g')
         .attr('class', 'axis')
         .each(function(d) {
-            d3.select(this).call(axis.scale(y[d]))
+            // console.log(y[d]);
+            d3.select(this).call(axis.scale(y[d]));
         })
         .append('text')
         .style('text-anchor', 'middle')
@@ -116,24 +106,37 @@ var dataset = [
         .attr('fill', 'black')
         .text(function(d) { return d; });
 
-    g.append("g")
-        .attr("class", "brush")
-        .each(function(d) { d3.select(this).call(y[d].brush = d3.brushY(y[d]).on("brush", brush)); })
-        .selectAll("rect")
-        .attr("x", -8)
-        .attr("width", 16);
+    var brush = d3.brushY().extent([[-12, 0], [12, height]])
+                            .on('brush', brushed)
+                            .on('end', brushEnded);
 
-    function brush() {
-        var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-            extents = actives.map(function(p) { return y[p].brush.extent(); });
+    g.append('g')
+        .attr('class', 'brush')
+        .each(function(d) {
+            // console.log(d);
+            d3.select(this).call(brush);
+        });
 
-            console.log('act', actives);
-            console.log('ext', extents);
 
-        foreground.style("display", function(d) {
-            return actives.every(function(p, i) {
-                return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-            }) ? null : "none";
+    var conditions = {};
+    function brushed(d) {
+        conditions[d] = d3.event.selection.map(y[d].invert);
+        // console.log(conditions[d][0], conditions[d][1]);
+        hide();
+    }
+    function brushEnded(d) {
+        if(d3.event.selection === null) {
+            delete conditions[d];
+            hide();
+        }
+    }
+    function hide() {
+        foreground.style('display', function(d) {
+            for(var k in conditions) {
+                if(d[k]>=conditions[k][0] || d[k]<=conditions[k][1]) {
+                    return 'none';
+                }
+            }
         });
     }
 
