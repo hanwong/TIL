@@ -4,10 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>groupLine</title>
+    <title>Stacked Line</title>
+    <style>
+    .tool {
+        position : absolute;
+        width: 100px;
+        height: 50px;
+        background: #fff0a3;
+        border-radius: 10%;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    .tool::before{
+        content: "";
+        position: absolute;
+        border-left: 10px solid transparent;
+        border-top: 20px solid #fff0a3;
+        border-right: 10px solid transparent;
+        margin: 40px 0 0 0;
+    }
+    </style>
 </head>
 <body>
-
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
@@ -105,10 +123,10 @@
 
     var area = d3.area()
                 .x(function(d, i) { return x(i); })
-                .y1(function(d) { return y(d); });
-                // .curve(d3.curveBasis);
+                .y1(function(d) { return y(d); })
+                .curve(d3.curveBasis);
 
-    svg.append('g').selectAll('g')
+    var areas = svg.append('g').selectAll('g')
         .data(stack)
         .enter().append('g')
         .append('path')
@@ -123,7 +141,22 @@
         })
         .style('fill', function(d, i) { return color(i); });
 
-        
+    areas.on('mouseover', function(d,i) {
+            tooltip.style('display', 'inline');
+        })
+        .on('mousemove', function(d,i) {
+            // console.log(d,i);
+            tooltip.html(d)
+                .style('left', x(i) +'px')
+                .style('top', y(d) +'px');
+                // .style('left', d3.event.pageX - 20 +'px')
+                // .style('top', d3.event.pageY + 30 +'px');
+        })
+        .on('mouseout', function(d,i) {
+            tooltip.style('display', 'none');
+        });
+
+    var tooltip = d3.select('body').append('div').attr('class', 'tool').style('display', 'none');
 </script>
 </body>
 </html>
