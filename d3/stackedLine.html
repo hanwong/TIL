@@ -35,10 +35,95 @@
         {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
       ];
 
-    function series(data, dimensions) {
-        // d3.map(data, )
+
+    function stackData(data, options) {
+        /*
+            options: order, group, measure
+        */
+        var stack = [], orderby = [];
+
+        var series = d3.nest()
+        .key(function(d) {return d[options.order];}) // orderby
+        .entries(data);
+        series.forEach(function(d) {
+            return orderby.push(d.key);
+        });
+
+        var nest = d3.nest()
+        .key(function(d) {return d[options.order];}) // orderby
+        .key(function(d) {return d[options.group];}) // groupby
+        .rollup(function(v) {return d3.mean(v, function(d) {return d[options.measure];} );} )
+        .entries(data);
+
+        nest.forEach(function(d, i) {
+            var s = [];
+            d.values.forEach(function(v, l) {
+                if( i === 0 ) { s.push(v.value); }
+                else {
+                    s.push(stack[i-1][l] + v.value);
+                }
+            });
+            stack.push(s);
+        });
+        console.log(JSON.stringify(stack));
+        return stack;
     }
 
+    var stack = stackData(dataset, {'order': 'c', 'group': 'x', 'measure': 'y'});
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20c);
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 700 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select('body')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom )
+              .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    var x = d3.scalePoint()
+                .domain(d3.range(stack[0].length))
+                .range([0,width]);
+    var y = d3.scaleLinear()
+                .domain([0,d3.max(stack[1], function(d, i) { return d; } )])
+                .range([height, 0]);
+    var xAxis = d3.axisBottom(x);
+    var yAxis = d3.axisLeft(y);
+
+
+    svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxis);
+
+    svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis);
+
+    var area = d3.area()
+                .x(function(d, i) { return x(i); })
+                .y1(function(d) { return y(d); });
+                // .curve(d3.curveBasis);
+
+    svg.append('g').selectAll('g')
+        .data(stack)
+        .enter().append('g')
+        .append('path')
+        .attr('d', function(d, i) {
+            if( i === 0 ) {
+                return area.y0(height)(d);
+            } else {
+                return area.y0(function(v, l) {
+                    return y(stack[i-1][l]);
+                })(d);
+            }
+        })
+        .style('fill', function(d, i) { return color(i); });
+
+        
 </script>
 </body>
 </html>
