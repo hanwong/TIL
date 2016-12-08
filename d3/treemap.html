@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Treemap</title>
+</head>
+<body>
+
+    <div class="box1"></div>
+    <div class="box2"></div>
+<script>
+function PrettyPrintJsonConsole(json) {
+    if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, '\t');
+    }
+
+    var
+        arr = [],
+        _string = 'color:green',
+        _number = 'color:darkorange',
+        _boolean = 'color:blue',
+        _null = 'color:magenta',
+        _key = 'color:red';
+
+    json = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var style = _number;
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                style = _key;
+            } else {
+                style = _string;
+            }
+        } else if (/true|false/.test(match)) {
+            style = _boolean;
+        } else if (/null/.test(match)) {
+            style = _null;
+        }
+        arr.push(style);
+        arr.push('');
+        return '%c' + match + '%c';
+    });
+
+    arr.unshift(json);
+
+    console.log.apply(console, arr);
+}
+</script>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+    var dataset = [
+        {"x": 0, "y": 50, "z": 50, "sc": "A", "c":"blue"}, {"x": 0, "y": 55, "z": 44, "sc": "A", "c":"orange"},
+        {"x": 1, "y": 43, "z": 23, "sc": "A", "c":"blue"}, {"x": 1, "y": 20, "z": 20, "sc": "A", "c":"orange"},
+        {"x": 2, "y": 81, "z": 81, "sc": "A", "c":"blue"}, {"x": 2, "y": 53, "z": 29, "sc": "A", "c":"orange"},
+        {"x": 3, "y": 19, "z": 19, "sc": "A", "c":"blue"}, {"x": 3, "y": 87, "z": 87, "sc": "A", "c":"orange"},
+        {"x": 4, "y": 52, "z": 52, "sc": "A", "c":"blue"}, {"x": 4, "y": 48, "z": 43, "sc": "A", "c":"orange"},
+        {"x": 5, "y": 24, "z": 34, "sc": "A", "c":"blue"}, {"x": 5, "y": 49, "z": 79, "sc": "A", "c":"orange"},
+        {"x": 6, "y": 87, "z": 87, "sc": "A", "c":"blue"}, {"x": 6, "y": 66, "z": 66, "sc": "A", "c":"orange"},
+        {"x": 7, "y": 17, "z": 17, "sc": "A", "c":"blue"}, {"x": 7, "y": 27, "z": 27, "sc": "A", "c":"orange"},
+        {"x": 8, "y": 68, "z": 98, "sc": "A", "c":"blue"}, {"x": 8, "y": 16, "z": 56, "sc": "A", "c":"orange"},
+        {"x": 9, "y": 49, "z": 49, "sc": "A", "c":"blue"}, {"x": 9, "y": 15, "z": 15, "sc": "A", "c":"orange"},
+        {"x": 0, "y": 30, "z": 10, "sc": "A", "c":"blue"}, {"x": 0, "y": 20, "z": 20, "sc": "A", "c":"orange"},
+        {"x": 1, "y": 43, "z": 53, "sc": "A", "c":"blue"}, {"x": 1, "y": 91, "z": 91, "sc": "A", "c":"orange"},
+        {"x": 2, "y": 81, "z": 81, "sc": "A", "c":"blue"}, {"x": 2, "y": 53, "z": 53, "sc": "A", "c":"orange"},
+        {"x": 3, "y": 19, "z": 19, "sc": "A", "c":"blue"}, {"x": 3, "y": 87, "z": 47, "sc": "A", "c":"orange"},
+        {"x": 4, "y": 52, "z": 12, "sc": "A", "c":"blue"}, {"x": 4, "y": 48, "z": 48, "sc": "A", "c":"orange"},
+        {"x": 5, "y": 24, "z": 24, "sc": "A", "c":"blue"}, {"x": 5, "y": 49, "z": 39, "sc": "A", "c":"orange"},
+        {"x": 6, "y": 87, "z": 17, "sc": "A", "c":"blue"}, {"x": 6, "y": 66, "z": 66, "sc": "A", "c":"orange"},
+        {"x": 7, "y": 17, "z": 17, "sc": "A", "c":"blue"}, {"x": 7, "y": 27, "z": 17, "sc": "A", "c":"orange"},
+        {"x": 8, "y": 68, "z": 68, "sc": "A", "c":"blue"}, {"x": 8, "y": 16, "z": 26, "sc": "A", "c":"orange"},
+        {"x": 9, "y": 49, "z": 49, "sc": "A", "c":"blue"}, {"x": 9, "y": 15, "z": 15, "sc": "A", "c":"orange"},
+        {"x": 9, "y": 49, "z": 49, "sc": "A", "c":"blue"}, {"x": 9, "y": 15, "z": 15, "sc": "A", "c":"orange"},
+
+        {"x": 10, "y": 50, "z": 50, "sc": "A", "c":"blue"}, {"x": 10, "y": 55, "z": 44, "sc": "A", "c":"orange"},
+        {"x": 11, "y": 43, "z": 23, "sc": "A", "c":"blue"}, {"x": 11, "y": 20, "z": 20, "sc": "A", "c":"orange"},
+        {"x": 12, "y": 81, "z": 81, "sc": "A", "c":"blue"}, {"x": 12, "y": 53, "z": 29, "sc": "A", "c":"orange"},
+        {"x": 13, "y": 19, "z": 19, "sc": "A", "c":"blue"}, {"x": 13, "y": 87, "z": 87, "sc": "A", "c":"orange"},
+        {"x": 14, "y": 52, "z": 52, "sc": "A", "c":"blue"}, {"x": 14, "y": 48, "z": 43, "sc": "A", "c":"orange"},
+        {"x": 15, "y": 24, "z": 34, "sc": "A", "c":"blue"}, {"x": 15, "y": 49, "z": 79, "sc": "A", "c":"orange"},
+        {"x": 16, "y": 87, "z": 87, "sc": "A", "c":"blue"}, {"x": 16, "y": 66, "z": 66, "sc": "A", "c":"orange"},
+        {"x": 17, "y": 17, "z": 17, "sc": "A", "c":"blue"}, {"x": 17, "y": 27, "z": 27, "sc": "A", "c":"orange"},
+        {"x": 18, "y": 68, "z": 98, "sc": "A", "c":"blue"}, {"x": 18, "y": 16, "z": 56, "sc": "A", "c":"orange"},
+        {"x": 19, "y": 49, "z": 49, "sc": "A", "c":"blue"}, {"x": 19, "y": 15, "z": 15, "sc": "A", "c":"orange"},
+        {"x": 10, "y": 30, "z": 10, "sc": "A", "c":"blue"}, {"x": 10, "y": 20, "z": 20, "sc": "A", "c":"orange"},
+        {"x": 11, "y": 43, "z": 53, "sc": "A", "c":"blue"}, {"x": 11, "y": 91, "z": 91, "sc": "A", "c":"orange"},
+        {"x": 12, "y": 81, "z": 81, "sc": "A", "c":"blue"}, {"x": 12, "y": 53, "z": 53, "sc": "A", "c":"orange"},
+        {"x": 13, "y": 19, "z": 19, "sc": "A", "c":"blue"}, {"x": 13, "y": 87, "z": 47, "sc": "A", "c":"orange"},
+        {"x": 14, "y": 52, "z": 12, "sc": "A", "c":"blue"}, {"x": 14, "y": 48, "z": 48, "sc": "A", "c":"orange"},
+        {"x": 15, "y": 24, "z": 24, "sc": "A", "c":"blue"}, {"x": 15, "y": 49, "z": 39, "sc": "A", "c":"orange"},
+        {"x": 16, "y": 87, "z": 17, "sc": "A", "c":"blue"}, {"x": 16, "y": 66, "z": 66, "sc": "A", "c":"orange"},
+        {"x": 17, "y": 17, "z": 17, "sc": "A", "c":"blue"}, {"x": 17, "y": 27, "z": 17, "sc": "A", "c":"orange"},
+        {"x": 18, "y": 68, "z": 68, "sc": "A", "c":"blue"}, {"x": 18, "y": 16, "z": 26, "sc": "A", "c":"orange"},
+        {"x": 19, "y": 49, "z": 49, "sc": "A", "c":"blue"}, {"x": 19, "y": 15, "z": 15, "sc": "A", "c":"orange"},
+        {"x": 19, "y": 49, "z": 49, "sc": "A", "c":"blue"}, {"x": 19, "y": 15, "z": 15, "sc": "A", "c":"orange"},
+
+        {"x": 0, "y": 22, "z": 50, "sc":"B", "c":"orange"}, {"x": 0, "y": 55, "z": 24, "sc":"B", "c":"green"},
+        {"x": 1, "y": 34, "z": 23, "sc":"B", "c":"orange"}, {"x": 1, "y": 20, "z": 34, "sc":"B", "c":"green"},
+        {"x": 2, "y": 81, "z": 81, "sc":"B", "c":"orange"}, {"x": 2, "y": 53, "z": 29, "sc":"B", "c":"green"},
+        {"x": 3, "y": 19, "z": 19, "sc":"B", "c":"orange"}, {"x": 3, "y": 87, "z": 87, "sc":"B", "c":"green"},
+        {"x": 4, "y": 52, "z": 52, "sc":"B", "c":"orange"}, {"x": 4, "y": 48, "z": 43, "sc":"B", "c":"green"},
+        {"x": 5, "y": 24, "z": 34, "sc":"B", "c":"orange"}, {"x": 5, "y": 49, "z": 79, "sc":"B", "c":"green"},
+        {"x": 6, "y": 87, "z": 87, "sc":"B", "c":"orange"}, {"x": 6, "y": 66, "z": 66, "sc":"B", "c":"green"},
+        {"x": 7, "y": 17, "z": 17, "sc":"B", "c":"orange"}, {"x": 7, "y": 27, "z": 27, "sc":"B", "c":"green"},
+        {"x": 8, "y": 68, "z": 98, "sc":"B", "c":"orange"}, {"x": 8, "y": 16, "z": 56, "sc":"B", "c":"green"},
+        {"x": 9, "y": 49, "z": 49, "sc":"B", "c":"orange"}, {"x": 9, "y": 15, "z": 15, "sc":"B", "c":"green"},
+        {"x": 0, "y": 30, "z": 10, "sc":"B", "c":"orange"}, {"x": 0, "y": 20, "z": 20, "sc":"B", "c":"green"},
+        {"x": 1, "y": 43, "z": 53, "sc":"B", "c":"orange"}, {"x": 1, "y": 91, "z": 91, "sc":"B", "c":"green"},
+        {"x": 2, "y": 81, "z": 81, "sc":"B", "c":"orange"}, {"x": 2, "y": 53, "z": 53, "sc":"B", "c":"green"},
+        {"x": 3, "y": 19, "z": 19, "sc":"B", "c":"orange"}, {"x": 3, "y": 87, "z": 47, "sc":"B", "c":"green"},
+        {"x": 4, "y": 52, "z": 12, "sc":"B", "c":"orange"}, {"x": 4, "y": 48, "z": 48, "sc":"B", "c":"green"},
+        {"x": 5, "y": 24, "z": 24, "sc":"B", "c":"orange"}, {"x": 5, "y": 49, "z": 39, "sc":"B", "c":"green"},
+        {"x": 6, "y": 87, "z": 17, "sc":"B", "c":"orange"}, {"x": 6, "y": 66, "z": 66, "sc":"B", "c":"green"},
+        {"x": 7, "y": 17, "z": 17, "sc":"B", "c":"orange"}, {"x": 7, "y": 27, "z": 17, "sc":"B", "c":"green"},
+        {"x": 8, "y": 68, "z": 68, "sc":"B", "c":"orange"}, {"x": 8, "y": 16, "z": 26, "sc":"B", "c":"green"},
+        {"x": 9, "y": 49, "z": 49, "sc":"B", "c":"orange"}, {"x": 9, "y": 15, "z": 15, "sc":"B", "c":"green"},
+        {"x": 9, "y": 49, "z": 49, "sc":"B", "c":"orange"}, {"x": 9, "y": 15, "z": 15, "sc":"B", "c":"green"}
+    ];
+
+    var nest = d3.nest()
+                .key(function(d) {return d.sc;})
+                .key(function(d) {return d.c;})
+                .key(function(d) {return d.x;})
+                .entries(dataset);
+    var rootedData = {'key': 'root', 'values': nest};
+    var root = d3.hierarchy(rootedData, function(d) {return d.values;});
+    root.sum(function(d) {return d.y;});
+
+    // PrettyPrintJsonConsole(JSON.stringify(root, null, 4));
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        width = 700 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+    var color = d3.scaleOrdinal(d3.schemeCategory20c);
+    var svg1 = d3.select('.box1')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom )
+              .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+    var svg2 = d3.select('.box2')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom )
+              .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    var treemap = d3.treemap()
+        .tile(d3.treemapResquarify)
+        .size([width, height])
+        .paddingInner(1);
+
+    var pack = d3.pack().size([height, height]);
+
+
+    var cell = svg1.selectAll('g')
+                .data(treemap(root).leaves())
+                .enter().append('g')
+                .attr("transform", function(d) { return "translate(" + d.x0 + "," + d.y0 + ")"; });
+
+    cell.append("rect")
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .attr("height", function(d) { return d.y1 - d.y0; })
+        .attr("fill", function(d,i) {
+            var c = d.data.c + d.data.sc;
+            return color(c); });
+
+    var node = svg2.selectAll('g')
+                .data(pack(root).descendants())
+                .enter().append("g")
+                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    node.append("circle")
+          .attr("r", function(d) { console.log(d); return d.r; })
+          .attr("fill", function(d,i) {
+                  var c = d.data.c + d.data.sc + d.data.x;
+                  return color(i); });
+
+</script>
+</body>
+</html>

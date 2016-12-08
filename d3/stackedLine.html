@@ -70,7 +70,7 @@
         var nest = d3.nest()
         .key(function(d) {return d[options.order];}) // orderby
         .key(function(d) {return d[options.group];}) // groupby
-        .rollup(function(v) {return d3.mean(v, function(d) {return d[options.measure];} );} )
+        .rollup(function(v) {return d3.mean(v, function(d) {return d[options.field];} );} )
         .entries(data);
 
         nest.forEach(function(d, i) {
@@ -87,7 +87,7 @@
         return stack;
     }
 
-    var stack = stackData(dataset, {'order': 'c', 'group': 'x', 'measure': 'y'});
+    var stack = stackData(dataset, {'order': 'c', 'group': 'x', 'field': 'y'});
 
     var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
