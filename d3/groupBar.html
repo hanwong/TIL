@@ -33,12 +33,7 @@
         {"x": 8, "y": 68, "z": 68, "c":"blue"}, {"x": 8, "y": 16, "z": 26, "c":"orange"},
         {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"},
         {"x": 9, "y": 49, "z": 49, "c":"blue"}, {"x": 9, "y": 15, "z": 15, "c":"orange"}
-      ];
-
-    //   var dataset2 = [
-    //       [50,43,81,19,52,24,87,17,68,49,30,43,81,19,52,24,87,17,68,49,49],
-    //       [55,20,53,87,48,49,66,27,16,15,20,91,53,87,48,49,66,27,16,15,15]
-    //   ];
+    ];
 
     var group = d3.map(dataset, function(d) { return d.c });
     var groupName = [];
@@ -60,20 +55,6 @@
             });
             newData.push(innerData);
         });
-    // var data = [];
-    // dataset.forEach(function(d) {
-    //   if(!group.includes(d.c)) {
-    //     group.push(d.c);
-    //     data.push([]);
-    //   }
-    // });
-    // group.forEach(function(d, i) {
-    //     dataset.forEach(function(k) {
-    //         if(k.c === d) {
-    //             data[i].push(k.y);
-    //         }
-    //     });
-    // });
 
     var x1leng = 0;
     dataset.forEach(function(d) {
@@ -139,17 +120,7 @@
         .attr('x', function(d, i) {
             // console.log(d,i);
             return x1.bandwidth()*i; })
-        .attr('y', function(d) { return y(d); })
-        .on('mouseover', function(d){
-
-            // console.log(d);
-
-            d3.select(this)
-                .attr('fill', 'orange')
-              .append('text')
-                .text(function(d) { return d; })
-                .attr('color', 'white');
-        });
+        .attr('y', function(d) { return y(d); });
 
 </script>
 </body>
