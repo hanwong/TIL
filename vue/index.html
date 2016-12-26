@@ -5,31 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Vue.js</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="vue.js"></script>
 </head>
 <body>
   <div id="app">
-    <my-component message="안녕하세요"></my-component>
+    <input type="text" @input="changeTitle">
+    <p>{{ title }}</p>
   </div>
 <script>
-
-// Vue.component('my-component', {
-//   template: '<div>Vue.js</div>'
-// });
-// var data = { message: 'hello vue!!'};
-
-var Child = {
-  props: ['message'],
-  template: '<div>{{message}}</div>'
-};
-
-var app = new Vue({
+new Vue({
   el: '#app',
-  components: {
-    'my-component': Child
+  data: {
+    title: 'hello vue!!!'
+  },
+  methods: {
+    changeTitle: function(event) {
+      this.title = event.target.value;
+    }
   }
 });
-
 </script>
 </body>
 </html>
