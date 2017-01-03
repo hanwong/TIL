@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>smallMulti</title>
+
+</head>
+<body>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+  var dataset = [
+      {"x": 0, "y": 50, "z": 50, "c":"blue"},{"x": 0, "y": 23, "z": 50, "c":"green"},{"x": 0, "y": 33, "z": 50, "c":"gray"},{"x": 0, "y": 55, "z": 44, "c":"orange"},
+      {"x": 1, "y": 43, "z": 23, "c":"blue"},{"x": 1, "y": 42, "z": 23, "c":"green"},{"x": 1, "y": 16, "z": 23, "c":"gray"},{"x": 1, "y": 20, "z": 20, "c":"orange"},
+      {"x": 2, "y": 81, "z": 81, "c":"blue"},{"x": 2, "y": 11, "z": 81, "c":"green"},{"x": 2, "y": 44, "z": 81, "c":"gray"},{"x": 2, "y": 53, "z": 29, "c":"orange"},
+      {"x": 3, "y": 19, "z": 19, "c":"blue"},{"x": 3, "y": 21, "z": 19, "c":"green"},{"x": 3, "y": 22, "z": 19, "c":"gray"},{"x": 3, "y": 87, "z": 87, "c":"orange"},
+      {"x": 4, "y": 52, "z": 52, "c":"blue"},{"x": 4, "y": 49, "z": 52, "c":"green"},{"x": 4, "y": 15, "z": 52, "c":"gray"},{"x": 4, "y": 48, "z": 43, "c":"orange"},
+      {"x": 5, "y": 24, "z": 34, "c":"blue"},{"x": 5, "y": 83, "z": 34, "c":"green"},{"x": 5, "y": 77, "z": 34, "c":"gray"},{"x": 5, "y": 49, "z": 79, "c":"orange"},
+      {"x": 6, "y": 87, "z": 87, "c":"blue"},{"x": 6, "y": 10, "z": 87, "c":"green"},{"x": 6, "y": 60, "z": 87, "c":"gray"},{"x": 6, "y": 66, "z": 66, "c":"orange"},
+      {"x": 7, "y": 17, "z": 17, "c":"blue"},{"x": 7, "y": 22, "z": 17, "c":"green"},{"x": 7, "y": 50, "z": 17, "c":"gray"},{"x": 7, "y": 27, "z": 27, "c":"orange"},
+      {"x": 8, "y": 68, "z": 98, "c":"blue"},{"x": 8, "y": 33, "z": 98, "c":"green"},{"x": 8, "y": 21, "z": 98, "c":"gray"},{"x": 8, "y": 16, "z": 56, "c":"orange"},
+      {"x": 9, "y": 49, "z": 49, "c":"blue"},{"x": 9, "y": 19, "z": 49, "c":"green"},{"x": 9, "y": 92, "z": 49, "c":"gray"},{"x": 9, "y": 15, "z": 15, "c":"orange"}
+  ];
+
+  var color = d3.scaleOrdinal(['#2478e7','#60d5d1','#d878e4','#e78c2d']);
+  var colorArea = d3.scaleOrdinal(['rgba(36, 120, 231, 0.44)', 'rgba(231, 140, 45, 0.41)']);
+
+  var margin = {top: 8, right: 10, bottom: 2, left: 10},
+      width = 500 - margin.left - margin.right,
+      height = 100 - margin.top - margin.bottom;
+
+  var x = d3.scalePoint()
+            .range([0,width]);
+
+  var y = d3.scaleLinear()
+            .range([height,0]);
+
+  var area = d3.area()
+              .x(function(d) { return x(d.x); })
+              .y0(height)
+              .y1(function(d) { return y(d.y); })
+              .curve(d3.curveBasis);
+
+  var line = d3.line()
+              .x(function(d) { return x(d.x); })
+              .y(function(d) { return y(d.y); })
+              .curve(d3.curveBasis);
+
+  var groupC = d3.nest()
+                .key(function(d) { return d.c })
+                .entries(dataset);
+
+
+  groupC.forEach(function(s) {
+    s.maxValue = d3.max(s.values, function(d) { return d.y; });
+  });
+
+  x.domain(d3.range(groupC[0].values.length));
+
+  var svg = d3.select("body").selectAll("svg")
+              .data(groupC)
+              .enter().append("svg")
+              .attr('width', width + margin.left + margin.right)
+              .attr('height', height + margin.top + margin.bottom )
+              .append('g')
+              .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+  svg
+      .append("path")
+      .attr("class", "area")
+      .attr("d", function(d) { y.domain([0, d.maxValue]); return area(d.values); })
+      .style('fill', function(d, i) { return color(i); });
+
+
+</script>
+</body>
+</html>
