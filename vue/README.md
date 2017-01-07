@@ -1,11 +1,10 @@
 ### VUEJS STUDY
 ---
+[**vue-cli**](https://github.com/vuejs/vue-cli)
+
 ```cli
-[vue-cli](https://github.com/vuejs/vue-cli)
 npm install -g vue-cli
 vue init webpack-simple projectName
-
-
 ```
 
 ---
