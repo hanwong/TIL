@@ -2,8 +2,8 @@
     <div class="col-xs-12 col-sm-6">
         <ul class="list-group">
           <app-server
-              v-for="server in servers"
-              :server="server">
+              v-for="pserver in servers"
+              :server="pserver">
           </app-server>
         </ul>
     </div>
