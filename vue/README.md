@@ -1,5 +1,14 @@
 ### VUEJS STUDY
 ---
+```cli
+[vue-cli](https://github.com/vuejs/vue-cli)
+npm install -g vue-cli
+vue init webpack-simple projectName
+
+
+```
+
+---
 
 #### 컴포넌트 간 데이터 전달 방식
 
