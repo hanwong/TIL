@@ -46,7 +46,8 @@ vue init webpack-simple projectName
 - `$on`, `v-on` PARENT Listening CHILD
   - 부모 컴포넌트에서 자식 컴포넌트에서 발생한 이벤트를 감지
   ```html
-  <button-counter v-on:methodsName="eventName"></button-counter>
+  <button-counter v-on:eventName="methodName"></button-counter>
+  <button-counter @eventName="methodName"></button-counter>
   ```
   ```js
     serverBus.$on('serverSelected', (server) => {
