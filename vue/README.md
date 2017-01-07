@@ -4,6 +4,13 @@
 
 ![Components data flow](vue-cli/src/assets/componentsdata.png)
 
+- 비 부모 자식 사이의 데이터 전달 방법
+  - `Bus` 개념을 활용
+    - `main.js`와 같은 가장 상위 코드에 Vue인스턴스를 중앙 이벤트 버스로 활용
+    ```js
+    export const serverBus = new Vue();
+    ```
+
 - `props` PARENT => CHILD.
   - 부모 컴포넌트에서 자식 컴포넌트에 데이터를 전달
   ```html
@@ -24,7 +31,7 @@
 - `$emit` CHILD => PARENT.
   - 자식 컴포넌트에서 부모 컴포넌트로 데이터 전달
   ```js
-  this.$emit('serverSelected', this.server);
+  serverBus.$emit('serverSelected', this.server);
   ```
 
 - `$on`, `v-on` PARENT Listening CHILD
@@ -33,7 +40,7 @@
   <button-counter v-on:methodsName="eventName"></button-counter>
   ```
   ```js
-    this.server.$on('serverSelected', (server) => {
+    serverBus.$on('serverSelected', (server) => {
       this.server = server;
     });
   ```
