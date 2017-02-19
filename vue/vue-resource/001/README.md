@@ -1,4 +1,5 @@
-#Vue-Resource
+# Vue-Resource
+### post
 
 - 소스를 내려 받고 `package.json` 파일이 있는 위치에서 `npm install`
 
