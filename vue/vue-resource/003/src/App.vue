@@ -55,16 +55,6 @@
         fetchData() {
           // this.$http
           //   .get('data.json')
-          //   .then(response => {
-          //     return response.json();
-          //   })
-          //   .then(data => {
-          //     const resultArray = [];
-          //     for ( let key in data ) {
-          //       resultArray.push(data[key]);
-          //     }
-          //     this.users = resultArray;
-          //   });
           this.resource.getData({ node: this.node })
             .then(response => {
               return response.json();
